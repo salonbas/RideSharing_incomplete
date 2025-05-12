@@ -7,11 +7,9 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 
 GPT請讀:
     此project用 Vue 3 Composition API + TailwindCSS
-    view_reference, component_reference不要管, 我拿來當作參考
 
 
-
-componet/Profile/ProfileBox.vue 有import/include Profile其他元件()
+note:components不只Profile這個folder
 components/
 └── Profile/
     ├── ProfileBox.vue         ← 主元件：排版整體結構，包含所有欄位  有import/include 另外3個vue元件
@@ -19,7 +17,7 @@ components/
     ├── ProfileField.vue       ← 通用欄位：label + value + (編輯按鈕)
     └── ProfilePhone.vue       ← 特製欄位：電話點擊顯示、圖片淡出
 
-profile包含一個可重複使用的個人檔案模組元件。需求如下：
+profile包含一個可重複使用的個人檔案模組元件, 還沒測試是否成功run：
 主元件：ProfileBox.vue  
 - 輸入：user（包含 avatar, nickname, account, instagram, phoneNumber）、isSelf（是否為本人）
 - 功能：排版並顯示所有資料欄位，根據 isSelf 控制是否顯示編輯按鈕與「更改密碼」按鈕
@@ -55,48 +53,3 @@ AppShell.vue	進階場景下，用於支援 App-like layout 切換效果等
 
 
 進階用法:在 App.vue 中用 <MainLayout> 包裹所有 <router-view />，這樣所有頁面就都有統一的 NavBar 和 Footer，無需每頁重複寫入。
-
-草擬 MainLayout.vue 的結構
-
-components/Layout/MainLayout.vue:
-<template>
-  <div class="min-h-screen flex flex-col">
-    <!-- 頁首 -->
-    <NavBar />
-
-    <!-- 主要內容區 -->
-    <main class="flex-1 px-4 py-6 bg-gray-50">
-      <slot />
-    </main>
-
-    <!-- 頁尾 -->
-    <Footer />
-  </div>
-</template>
-
-<script setup>
-import NavBar from './NavBar.vue'
-import Footer from './Footer.vue'
-</script>
-
-
-
-在 App.vue 包起所有頁面:
-<template>
-  <MainLayout>
-    <RouterView />
-  </MainLayout>
-</template>
-
-<script setup>
-import MainLayout from '@/components/Layout/MainLayout.vue'
-</script>
-
-
-建議檔案結構：
-components/
-└── Layout/
-    ├── NavBar.vue
-    ├── Footer.vue
-    └── MainLayout.vue
-頁面內容可由 <slot /> 彈性替換
