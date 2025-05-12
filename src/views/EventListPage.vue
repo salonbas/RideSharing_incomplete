@@ -90,7 +90,7 @@ import { useRouter, useRoute } from 'vue-router';
 import NavBar from '../components/Layout/NavBar.vue';
 import EventCard from '../components/Event/EventCard.vue';
 import EventFilterSort from '../components/Event/EventFilterSort.vue';
-import PaginationBar from '../components/Event/PaginationBar.vue';
+//import PaginationBar from '../components/Event/PaginationBar.vue';
 import ProfileBox from '../components/Profile/ProfileBox.vue';
 
 // 路由相關
@@ -446,3 +446,4 @@ const fetchEvents = () => {
   }, 800); // 模擬載入延遲
 };
 </script>
+

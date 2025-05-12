@@ -5,8 +5,95 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
 
-GPT請讀:
-    此project用 Vue 3 Composition API + TailwindCSS
+
+
+
+Add files
+
+tailwind.config.js
+package.json
+App.vue
+main.js
+index.js (router)
+
+EventListPage.vue
+HomePage.vue
+
+
+EventFilterSort.vue
+EventCard.vue
+
+Navbar.vue
+Navbar.vue
+MainLayout.vue
+
+ProfileBox.vue
+ProfileField.vue
+ProfilePhone.vue
+ProfileAvatar.vue
+
+VideoCard.vue
+
+
+
+專案架構:    
+C:.
+├─.vscode
+├─node_modules
+├─public
+│      vite.svg
+│
+└─src
+    │  App.vue
+    │  data.json
+    │  main.js
+    │  style.css
+    │
+    ├─assets
+    │      vue.svg
+    │
+    ├─components
+    │  ├─Event
+    │  │      EventCard.vue
+    │  │      EventFilterSort.vue
+    │  │
+    │  ├─Layout
+    │  │      Footer.vue
+    │  │      MainLayout.vue
+    │  │      Navbar.vue
+    │  │
+    │  ├─Profile
+    │  │      ProfileAvatar.vue
+    │  │      ProfileBox.vue
+    │  │      ProfileField.vue
+    │  │      ProfilePhone.vue
+    │  │
+    │  └─Video
+    │          VideoCard.vue
+    │
+    ├─components_reference
+    │      BackButton.vue
+    │      Card.vue
+    │      Hero.vue
+    │      HomeCards.vue
+    │      JobListing.vue
+    │      JobListings.vue
+    │      Navbar.vue
+    │
+    ├─router
+    │      index.js
+    │
+    ├─views
+    │      EventListPage.vue
+    │      HomePage.vue
+    │
+    └─views_reference
+            AddJobView.vue
+            EditJobView.vue
+            HomeView.vue
+            JobsView.vue
+            JobView.vue
+            NotFoundView.vue
 
 
 note:components不只Profile這個folder

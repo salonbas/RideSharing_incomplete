@@ -1,4 +1,4 @@
-// ProfileAvatar.vue
+<!-- src/components/Profile/ProfileAvatar.vue -->
 <template>
   <div class="relative">
     <!-- 頭像顯示 -->
@@ -17,8 +17,8 @@
         </svg>
       </span>
     </div>
-    
-    <!-- 編輯按鈕 (可選) -->
+
+    <!-- 編輯按鈕 -->
     <button 
       v-if="editable" 
       @click="$emit('edit')"
@@ -45,33 +45,4 @@ defineProps({
 });
 
 defineEmits(['edit']);
-</script>
-
-// 用法示例
-<template>
-  <div class="p-4">
-    <ProfileBox 
-      :user="user" 
-      :is-self="true"
-      @edit="handleEdit"
-    />
-  </div>
-</template>
-
-<script setup>
-import { ref } from 'vue';
-import ProfileBox from './components/ProfileBox.vue';
-
-const user = ref({
-  avatar: 'https://via.placeholder.com/150',
-  nickname: '用戶小明',
-  account: 'xiaoming123',
-  instagram: '@xiaoming_insta',
-  phoneNumber: '0912-345-678'
-});
-
-const handleEdit = ({ field }) => {
-  console.log(`Editing field: ${field}`);
-  // 這裡可以打開編輯對話框等等
-};
 </script>

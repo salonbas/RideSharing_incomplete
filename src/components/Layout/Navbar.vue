@@ -1,4 +1,4 @@
-// components/Layout/NavBar.vue
+// components/Layout/Navbar.vue
 <template>
   <nav class="bg-white shadow-md">
     <div class="container mx-auto px-4">
