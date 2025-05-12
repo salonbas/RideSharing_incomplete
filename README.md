@@ -7,34 +7,7 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 
 
 
-
-Add files
-
-tailwind.config.js
-package.json
-App.vue
-main.js
-index.js (router)
-
-EventListPage.vue
-HomePage.vue
-
-
-EventFilterSort.vue
-EventCard.vue
-
-Navbar.vue
-Navbar.vue
-MainLayout.vue
-
-ProfileBox.vue
-ProfileField.vue
-ProfilePhone.vue
-ProfileAvatar.vue
-
-VideoCard.vue
-
-
+tailwind 請安裝3.4.14
 
 專案架構:(請在vscode打開 以防格式跑掉)    
 C:.

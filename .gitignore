@@ -27,3 +27,4 @@ dist-ssr
 src/components_reference/
 src/views_reference/
 src/data.json
+src/tailwind-vue3-starter
