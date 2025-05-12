@@ -36,7 +36,7 @@ VideoCard.vue
 
 
 
-專案架構:    
+專案架構:(請在vscode打開 以防格式跑掉)    
 C:.
 ├─.vscode
 ├─node_modules
