@@ -11,7 +11,6 @@ import { RouterView } from 'vue-router';
     <div class="bg-gray-500 text-white shadow rounded p-4">
       如果這是灰白字＋陰影＋圓角=>Tailwind 有成功載入！
     </div>
-
   </div>  
   <Navbar />
   <RouterView />
