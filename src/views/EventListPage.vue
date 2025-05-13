@@ -36,7 +36,7 @@
         <p class="mt-4 text-lg text-gray-600">沒有找到符合條件的活動</p>
       </div>
       
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      <div v-else class="grid grid-cols-1  gap-6 mt-6">
         <EventCard 
           v-for="event in eventsToDisplay" 
           :key="event.id" 
@@ -88,7 +88,7 @@ import { useRouter, useRoute } from 'vue-router';
 import NavBar from '../components/Layout/NavBar.vue';
 import EventCard from '../components/Event/EventCard.vue';
 import EventFilterSort from '../components/Event/EventFilterSort.vue';
-//import PaginationBar from '../components/Event/PaginationBar.vue';
+import PaginationBar from '../components/Event/PaginationBar.vue';
 import ProfileBox from '../components/Profile/ProfileBox.vue';
 
 // 路由相關
