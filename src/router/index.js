@@ -4,6 +4,8 @@ import EventListPage from '@/views/EventListPage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import ForgotPasswordPage from '@/views/ForgotPasswordPage.vue';
 import PersonalInfoPage from '@/views/PersonalInfoPage.vue';
+import NotFoundView from '@/views/NotFoundView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,7 +15,7 @@ const router = createRouter({
     { path: '/login', name: 'login', component: LoginPage },
     { path: '/forgot-password', name: 'forgotPassword', component: ForgotPasswordPage },
     { path: '/profile', name: 'personalInfo', component: PersonalInfoPage },
-    { path: '/:catchAll(.*)', redirect: '/' },
+    { path: '/:catchAll(.*)', name: 'NotFound', component: NotFoundView },
   ],
 });
 

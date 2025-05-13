@@ -1,8 +1,6 @@
 // views/EventListPage.vue
 <template>
   <div class="bg-gray-50 min-h-screen">
-    <!-- 導航列 -->
-    <NavBar />
     
     <div class="container mx-auto px-4 py-6">
       <!-- 頂部區域：創建活動按鈕 -->

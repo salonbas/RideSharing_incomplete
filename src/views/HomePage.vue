@@ -1,6 +1,6 @@
 <template>
   <MainLayout>
-    <NavBar />
+    <LogoPart/>
     <div class="px-4 py-8 max-w-6xl mx-auto">
       <h1 class="text-2xl font-bold mb-4">探索最熱門的影片 🎥</h1>
       <p class="mb-8 text-gray-600">這裡是展示你最愛內容的地方，快來找看看有什麼好看的影片吧！</p>
@@ -40,6 +40,7 @@ import MainLayout from '@/components/Layout/MainLayout.vue'
 import NavBar from '@/components/Layout/NavBar.vue'
 import Footer from '@/components/Layout/Footer.vue'
 import VideoCard from '@/components/Video/VideoCard.vue'
+import LogoPart from '../components/Layout/LogoPart.vue'
 
 const videoDataList = ref(
   Array.from({ length: 15 }).map((_, i) => ({
