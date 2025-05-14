@@ -1,7 +1,7 @@
 // components/Layout/Navbar.vue
 <template>
   <nav class="bg-white shadow-md">
-    <div class="container mx-auto px-4">
+    <div class="max-w-7xl mx-auto px-4">
       <div class="flex justify-between items-center h-16">
         <!-- 左側 Logo 區 -->
         <div class="flex items-center">
