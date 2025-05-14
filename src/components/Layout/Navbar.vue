@@ -1,7 +1,7 @@
 // components/Layout/Navbar.vue
 <template>
   <nav class="bg-white shadow-md">
-    <div class="container mx-auto px-4">
+    <div class="max-w-7xl mx-auto px-4">
       <div class="flex justify-between items-center h-16">
         <!-- 左側 Logo 區 -->
         <div class="flex items-center">
@@ -44,16 +44,14 @@
             </span>
           </button>
           
-          <!-- 已登入使用者 -->
+          <!-- 頭相選單 -->
           <div class="relative" v-if="auth.isLoggedIn">
-            <AccountMenu/>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
+            <AccountMenu />
           </div>
           <div v-else class="flex items-center space-x-2">
-            <GuestMenu/>
+            <GuestMenu />
           </div>
+
           
           <!-- 手機版選單先擱置 -->
           <button 
@@ -78,7 +76,7 @@ const auth = useAuthStore();
 
 const route = useRoute();
 
-const showMobileMenu = ref(false);
+const showMobileMenu = ref(true);
 
 
 // 切換手機版選單
