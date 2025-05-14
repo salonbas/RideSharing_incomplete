@@ -19,7 +19,11 @@
         v-if="showMenu"
         class="absolute right-0 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50"
       >
-        <RouterLink to="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100" @click="closeMenu">
+        <RouterLink
+          to="/profile"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100"
+          @click="closeMenu"
+        >
           個人資料
         </RouterLink>
         <button
@@ -34,8 +38,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useClickOutside } from '@vueuse/core'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 
@@ -44,10 +47,14 @@ const auth = useAuthStore()
 
 const showMenu = ref(false)
 const menuRef = ref(null)
-useClickOutside(menuRef, () => (showMenu.value = false))
 
-const toggleMenu = () => (showMenu.value = !showMenu.value)
-const closeMenu = () => (showMenu.value = false)
+const toggleMenu = () => {
+  showMenu.value = !showMenu.value
+}
+
+const closeMenu = () => {
+  showMenu.value = false
+}
 
 const handleLogout = () => {
   auth.logout()
@@ -55,7 +62,22 @@ const handleLogout = () => {
   router.push('/')
 }
 
-// 模擬資料，請改成從 store 傳入
+// 點擊外部關閉選單
+const handleClickOutside = (event) => {
+  if (menuRef.value && !menuRef.value.contains(event.target)) {
+    closeMenu()
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+// 模擬用戶資料（可替換為 store 傳入）
 const user = {
   name: '阿明',
   avatarUrl: '/user-avatar.png'

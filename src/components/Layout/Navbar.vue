@@ -44,7 +44,13 @@
             </span>
           </button>
           
-          
+          <!-- 頭相選單 -->
+          <div class="relative" v-if="auth.isLoggedIn">
+            <AccountMenu />
+          </div>
+          <div v-else class="flex items-center space-x-2">
+            <GuestMenu />
+          </div>
 
           
           <!-- 手機版選單先擱置 -->
@@ -70,7 +76,7 @@ const auth = useAuthStore();
 
 const route = useRoute();
 
-const showMobileMenu = ref(false);
+const showMobileMenu = ref(true);
 
 
 // 切換手機版選單

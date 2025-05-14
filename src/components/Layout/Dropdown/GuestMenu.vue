@@ -1,4 +1,4 @@
-// components/Layout/Dropdown/GuestMenu.vue<template>
+<template>
   <div class="relative" ref="menuRef">
     <img
       src="/default-avatar.png"
@@ -34,17 +34,34 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useClickOutside } from '@vueuse/core'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 
 const showMenu = ref(false)
 const menuRef = ref(null)
 
-useClickOutside(menuRef, () => (showMenu.value = false))
+const toggleMenu = () => {
+  showMenu.value = !showMenu.value
+}
 
-const toggleMenu = () => (showMenu.value = !showMenu.value)
-const closeMenu = () => (showMenu.value = false)
+const closeMenu = () => {
+  showMenu.value = false
+}
+
+// 點擊外部關閉選單
+const handleClickOutside = (event) => {
+  if (menuRef.value && !menuRef.value.contains(event.target)) {
+    showMenu.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 
 const pages = [
   { name: '登入', path: '/login' },
