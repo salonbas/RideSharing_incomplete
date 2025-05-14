@@ -1,11 +1,10 @@
 // views/EventListPage.vue
 <template>
-  <div class="bg-gray-50 min-h-screen">
-    
-    <div class="container mx-auto px-4 py-6">
+  <div class="min-h-screen bg-gradient-to-b from-[#0a0f2c] to-[#1b233d] text-white">
+    <div class="px-4 sm:px-6 md:px-12 lg:px-20 py-8">
       <!-- 頂部區域：創建活動按鈕 -->
       <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">活動列表</h1>
+        <h1 class="text-2xl font-bold text-white">活動列表</h1>
         <button 
           @click="navigateToCreateEvent" 
           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition duration-200 flex items-center"
@@ -24,60 +23,62 @@
       />
       
       <!-- 活動列表 -->
-      <div v-if="loading" class="text-center py-12">
-        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mx-auto"></div>
-        <p class="mt-2 text-gray-600">載入中...</p>
-      </div>
-      
-      <div v-else-if="filteredEvents.length === 0" class="text-center py-12">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <p class="mt-4 text-lg text-gray-600">沒有找到符合條件的活動</p>
-      </div>
-      
-      <div v-else class="grid grid-cols-1  gap-6 mt-6">
-        <EventCard 
-          v-for="event in eventsToDisplay" 
-          :key="event.id" 
-          :event-data="event"
-          @show-profile="showProfile"
-          @join-event="handleJoinEvent"
+      <div class="px-4 sm:px-6 md:px-10 py-6">
+        <div v-if="loading" class="text-center py-12">
+          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mx-auto"></div>
+          <p class="mt-2 text-gray-300">載入中...</p>
+        </div>
+        
+        <div v-else-if="filteredEvents.length === 0" class="text-center py-12">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p class="mt-4 text-lg text-gray-300">沒有找到符合條件的活動</p>
+        </div>
+        
+        <div v-else class="grid grid-cols-1  gap-6 mt-6">
+          <EventCard 
+            v-for="event in eventsToDisplay" 
+            :key="event.id" 
+            :event-data="event"
+            @show-profile="showProfile"
+            @join-event="handleJoinEvent"
+          />
+        </div>
+        
+        <!-- 分頁 -->
+        <PaginationBar 
+          v-if="filteredEvents.length > 0"
+          :total-pages="totalPages" 
+          :current-page="currentPage" 
+          @page-change="handlePageChange" 
+          class="mt-8"
         />
       </div>
       
-      <!-- 分頁 -->
-      <PaginationBar 
-        v-if="filteredEvents.length > 0"
-        :total-pages="totalPages" 
-        :current-page="currentPage" 
-        @page-change="handlePageChange" 
-        class="mt-8"
-      />
-    </div>
-    
-    <!-- 個人資料浮動視窗 -->
-    <div 
-      v-if="showProfileBox" 
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-      @click.self="showProfileBox = false"
-    >
-      <div class="relative bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-        <button 
-          @click="showProfileBox = false" 
-          class="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-        <div class="p-1">
-          <ProfileBox 
-            :user="selectedOrganizer" 
-            :is-self="false"
-          />
+      <!-- 個人資料浮動視窗 -->
+      <div 
+        v-if="showProfileBox" 
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        @click.self="showProfileBox = false"
+      >
+        <div class="relative bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+          <button 
+            @click="showProfileBox = false" 
+            class="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <div class="p-1">
+            <ProfileBox 
+              :user="selectedOrganizer" 
+              :is-self="false"
+            />
+          </div>
         </div>
-      </div>
+       </div>
     </div>
   </div>
 </template>
@@ -444,4 +445,3 @@ const fetchEvents = () => {
   }, 800); // 模擬載入延遲
 };
 </script>
-
