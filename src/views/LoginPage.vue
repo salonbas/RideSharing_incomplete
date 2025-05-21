@@ -57,8 +57,14 @@ async function handleLogin() {
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
 .input {
-  @apply w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400;
+  @apply w-full px-4 py-2 border border-gray-300 rounded;
   font-family: 'Inter', sans-serif;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5); /* Optional */
 }
 
 .btn {
