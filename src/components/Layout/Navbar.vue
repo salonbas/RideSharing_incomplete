@@ -1,30 +1,30 @@
 // components/Layout/Navbar.vue
 <template>
-  <nav class="bg-white shadow-md">
-    <div class="max-w-7xl mx-auto px-4">
+  <nav class="bg-[#12150e] text-white shadow-md ">
+    <div class="max-w-screen mx-auto px-20">
       <div class="flex justify-between items-center h-16">
         <!-- 左側 Logo 區 -->
         <div class="flex items-center">
           <router-link to="/" class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            <span class="ml-2 text-xl font-bold text-gray-800">活動平台</span>
+            <span class="ml-2 text-xl font-bold text-white">活動平台</span>
           </router-link>
         </div>
         
         <!-- 中間導航區 -->
-        <div class="hidden md:flex space-x-8 items-center">
+        <div class="hidden md:flex space-x-12 items-center">
           <router-link 
             to="/" 
-            class="text-gray-600 hover:text-blue-600 transition-colors"
+            class="link-btn font-sans text-lg"
             :class="{ 'text-blue-600 font-medium': isActive('/') }"
           >
             首頁
           </router-link>
           <router-link 
             to="/events" 
-            class="text-gray-600 hover:text-blue-600 transition-colors"
+            class="link-btn font-sans text-lg"
             :class="{ 'text-blue-600 font-medium': isActive('/events') }"
           >
             活動列表
@@ -62,6 +62,7 @@
         </div>
       </div>
     </div>
+    <hr class="border-t border-white/20" />
   </nav>
 </template>
 

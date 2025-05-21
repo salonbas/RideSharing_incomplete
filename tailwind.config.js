@@ -8,12 +8,18 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
+        sans: ['GenYoGothicTW','Noto Sans TC', 'sans-serif'],
       },
       gridTemplateColumns: {
         '70/30': '70% 28%',
       },
     },
+  },
+  corePlugins:{
+    ringWidth: false,
+    ringColor: false,
+    ringOffseWidth: false,
+    ringOffsetColor: false,
   },
   plugins: [],
 }

@@ -1,39 +1,23 @@
-<!-- components/Event/PaginationBar.vue -->
 <template>
-  <div class="flex justify-center space-x-2 flex-wrap">
-    <!-- 第一頁按鈕 -->
+  <div class="flex justify-center items-center space-x-4">
+    <!-- 上一頁 -->
     <button
-      @click="$emit('page-change', 1)"
+      @click="$emit('page-change', currentPage - 1)"
       :disabled="currentPage === 1"
-      class="px-3 py-2 border rounded-md"
-      :class="currentPage === 1 ? 'bg-gray-300 text-gray-500' : 'bg-white text-gray-700 hover:bg-gray-200'"
+      class="text-white text-3xl px-3 transition hover:text-yellow-400 disabled:opacity-30 disabled:cursor-not-allowed"
+      aria-label="Previous page"
     >
-      First
+      &larr;
     </button>
 
-    <!-- 中間頁數 -->
+    <!-- 下一頁 -->
     <button
-      v-for="page in totalPages"
-      :key="page"
-      @click="$emit('page-change', page)"
-      :class="[
-        'px-3 py-2 border rounded-md',
-        currentPage === page
-          ? 'bg-blue-600 text-white'
-          : 'bg-white text-gray-700 hover:bg-gray-200'
-      ]"
-    >
-      {{ page }}{{ page === 1 ? 'st' : page === 2 ? 'nd' : page === 3 ? 'rd' : 'th' }} page
-    </button>
-
-    <!-- 最後一頁按鈕 -->
-    <button
-      @click="$emit('page-change', totalPages)"
+      @click="$emit('page-change', currentPage + 1)"
       :disabled="currentPage === totalPages"
-      class="px-3 py-2 border rounded-md"
-      :class="currentPage === totalPages ? 'bg-gray-300 text-gray-500' : 'bg-white text-gray-700 hover:bg-gray-200'"
+      class="text-white text-3xl px-3 transition hover:text-yellow-400 disabled:opacity-30 disabled:cursor-not-allowed"
+      aria-label="Next page"
     >
-      Last
+      &rarr;
     </button>
   </div>
 </template>
