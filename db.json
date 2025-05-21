@@ -1,0 +1,51 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "搭計程車到彰化火車站",
+      "description": "7月4號台中市政府集合",
+      "location": {
+        "from": {
+          "city": "台中市",
+          "detail": "台中市政府前"
+        },
+        "destination": {
+          "city": "高雄市",
+          "detail": "愛河旁邊的煙火會場"
+        }
+      },
+      "requiredSeats": 4,
+      "joinedSeats": 2,
+      "date": "2025-07-04T17:00:00"
+    }
+  ],
+  "users": [
+    {
+        "id": 1,
+        "username": "user1_account",
+        "password": "123456",
+        "nickname": "user1的暱稱",
+        "avatarUrl": "/default-avatar.png",
+        "instagram": "https://instagram.com/xxx",
+        "email": "user1@example.com",
+        "phone": "0912345678",
+        "bio": "哈囉這是我的個人簡介"
+    },
+    {
+      "id": 2,
+      "username": "catlover",
+      "password": "cat123",
+      "nickname": "喵星人",
+      "avatarUrl": "/avatars/cat.png",
+      "instagram": "https://instagram.com/catlover",
+      "email": "cat@example.com",
+      "phone": "0922111333"
+    }
+  ]
+}

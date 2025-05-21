@@ -3,20 +3,6 @@
   <div
     class="w-full h-[40vh] bg-white/10 backdrop-blur-sm text-white rounded-[28px] shadow-md hover:scale-[1.02] transition p-4 flex flex-col"
   >
-    <div class="flex-1 flex mb-2">
-      <!-- 上半部：頭像 + 主辦人與路線 -->
-      <div class="w-1/2 h-full flex items-center justify-center p-6">
-        <!-- 🧑 頭像 -->
-        <div
-          class="h-full aspect-square rounded-full overflow-hidden cursor-pointer"
-          @click="$emit('show-profile', eventData.organizer)"
-        >
-          <img
-            :src="eventData.organizer.avatar"
-            :alt="eventData.organizer.nickname"
-            class="h-full w-full object-cover"
-          />
-        </div>
       </div>
       <!-- 👤 名字 + 路線 -->
       <div class="w-1/2 flex flex-col justify-center items-center pl-2">
@@ -87,7 +73,7 @@ const formattedDate = computed(() => {
 // 計算活動類型標籤與顏色
 const typeLabel = computed(() => {
   switch (props.eventData.type) {
-    case 'carpool':
+    case 'ridesharing':
       return '共乘';
     case 'drink':
       return '飲酒';
@@ -100,7 +86,7 @@ const typeLabel = computed(() => {
 
 const typeColorClass = computed(() => {
   switch (props.eventData.type) {
-    case 'carpool':
+    case 'ridesharing':
       return 'bg-green-100 text-green-600';
     case 'drink':
       return 'bg-blue-100 text-blue-600';

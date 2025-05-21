@@ -30,7 +30,7 @@
         @change="emitFilterChange"
       >
         <option value="all">全部類型</option>
-        <option value="carpool">共乘</option>
+        <option value="ridesharing">共乘</option>
         <option value="drink">飲酒</option>
         <option value="sports">運動</option>
       </select>
