@@ -23,7 +23,20 @@ dist-ssr
 *.sln
 *.sw?
 
-
+# Dev only references
 src/components_reference/
 src/views_reference/
-src/data.json
+
+# mock server
+RideSharing/db.json
+
+__pycache__/
+*.pyc
+app.db
+.env
+.vscode/
+
+*.pyo
+*.pyd
+*.sqlite3
+*.egg-info/

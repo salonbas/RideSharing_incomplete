@@ -1,3 +1,4 @@
+//src\views\LoginPage.vue
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-b from-yellow-300 to-black">
     <div class="w-full max-w-md md:max-w-lg lg:max-w-xl p-8 bg-white rounded-lg shadow-xl">
@@ -15,15 +16,40 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 import { useRouter } from 'vue-router'
 
+const username = ref('')
+const password = ref('')
 const auth = useAuthStore()
 const router = useRouter()
 
-function handleLogin() {
-  auth.login()
-  router.push('/')
+async function handleLogin() {
+  console.log('🚀 handleLogin triggered')
+  try {
+    const res = await axios.post('http://localhost:5000/login', {
+      username: username.value,
+      password: password.value
+    })
+    console.log(auth.login.toString())
+
+    const { token, user } = res.data
+    auth.login(user, token)
+    auth.login(user, token)
+
+    console.log('✅ login() 執行完畢')
+    console.log('auth.isLoggedIn:', auth.isLoggedIn)
+    console.log('auth.user:', auth.user)
+    console.log('auth.token:', auth.token)
+
+    console.log('✅ 登入成功，準備導向首頁')
+    router.push('/')
+  } catch (err) {
+    console.error('❌ 登入失敗:', err)
+    alert('登入失敗')
+  }
 }
 </script>
 

@@ -1,15 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'GenYoGothicTW', 'Noto Sans TC', 'sans-serif';
+  font-weight: 600;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-image: linear-gradient(to bottom,#0a0f2c, #1b233d);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #0a0f2c;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -40,8 +47,8 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
+  border-radius: 0px;
+  border: 0px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
@@ -55,7 +62,8 @@ button:hover {
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: none;
+  box-shadow: none;
 }
 
 .card {
@@ -81,3 +89,60 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.link-btn, .link-btn:visited{
+  background-color: transparent;
+  color: #d1ad44;
+  font-weight:700;
+  padding: 0.25rem 1rem;
+  border-radius: 9999px;
+  transition: 0.4s cubic-bezier(0.8,0,0,1);
+  position: relative;
+  line-height:1.5;
+  letter-spacing:1px;
+}
+
+.link-btn:hover{
+  background-color: transparent;
+  color: white;
+}
+
+.link-btn-disabled:disabled{
+  background-color: #6b7280;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.link-btn:focus{
+  outline: none;
+  box-shadow: none;
+}
+
+.border-animate{
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.border-animate::before{
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid #d1ad44;
+  border-radius: inherit;
+  clip-path: inset(0 100% 100% 0);
+  z-index: -1;
+}
+
+.border-animate:hover::before{
+  animation: draw-border 1s ease forwards;
+}
+
+@keyframes draw-border{
+  0%   { clip-path: inset(0 100% 100% 0); } /* 左上角 */
+  25%  { clip-path: inset(0 0 100% 0); }    /* 上邊顯示 */
+  50%  { clip-path: inset(0 0 0 0); }       /* 全部出現 */
+  100% { clip-path: inset(0 0 0 0); }       /* 保持不變 */
+}
+
+/* TODO: 藍邊 focus bug，等整體設計統一時重構 button 元件 */
