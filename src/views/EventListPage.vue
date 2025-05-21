@@ -1,42 +1,42 @@
 // views/EventListPage.vue
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-[#0a0f2c] to-[#1b233d] text-white">
+  <div class="min-h-screen bg-[#12150e] text-white">
     <div class="px-4 sm:px-6 md:px-12 lg:px-20 py-8">
+      <div class="max-w-[85vw] mx-auto">
       <!-- 頂部區域：創建活動按鈕 -->
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-white">活動列表</h1>
-        <button 
-          @click="navigateToCreateEvent" 
-          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition duration-200 flex items-center"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-          </svg>
-          發起活動
-        </button>
-      </div>
-      
-      <!-- 篩選與排序 -->
-      <EventFilterSort 
-        @sort-change="handleSortChange" 
-        @filter-change="handleFilterChange" 
-      />
-      
-      <!-- 活動列表 -->
-      <div class="px-4 sm:px-6 md:px-10 py-6">
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="text-4xl font-bold text-[#d1ad41]">活動列表</h1>
+          <button 
+            @click="navigateToCreateEvent" 
+            class="bg-[#d1ad41] hover:bg-[#a08432e7] text-[#1c1e10] px-6 py-3 rounded-md transition duration-200 flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            發起活動
+          </button>
+        </div>
+        
+        <!-- 篩選與排序 -->
+        <!-- <EventFilterSort 
+          @sort-change="handleSortChange" 
+          @filter-change="handleFilterChange" 
+        /> -->
+        
+        <!-- 活動列表 -->
         <div v-if="loading" class="text-center py-12">
-          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mx-auto"></div>
-          <p class="mt-2 text-gray-300">載入中...</p>
+          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-[#d1ad41] mx-auto"></div>
+          <p class="mt-2 text-[#d1ad41]">載入中...</p>
         </div>
         
         <div v-else-if="filteredEvents.length === 0" class="text-center py-12">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p class="mt-4 text-lg text-gray-300">沒有找到符合條件的活動</p>
+          <p class="mt-4 text-lg text-[#d1ad41]">沒有找到符合條件的活動</p>
         </div>
         
-        <div v-else class="grid grid-cols-1  gap-6 mt-6">
+        <div v-else class="min-h-[75vh] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-fr gap-8 mt-6">
           <EventCard 
             v-for="event in eventsToDisplay" 
             :key="event.id" 
@@ -47,13 +47,14 @@
         </div>
         
         <!-- 分頁 -->
-        <PaginationBar 
-          v-if="filteredEvents.length > 0"
-          :total-pages="totalPages" 
-          :current-page="currentPage" 
-          @page-change="handlePageChange" 
-          class="mt-8"
-        />
+        <div class="fixed top-1/2 right-4 -translate-y-1/2 z-50 flex flex-col items-center space-y-2">
+          <PaginationBar 
+            v-if="filteredEvents.length > 0"
+            :total-pages="totalPages" 
+            :current-page="currentPage" 
+            @page-change="handlePageChange" 
+          />
+        </div>
       </div>
       
       <!-- 個人資料浮動視窗 -->
@@ -78,7 +79,7 @@
             />
           </div>
         </div>
-       </div>
+      </div>
     </div>
   </div>
 </template>
@@ -104,7 +105,7 @@ const events = ref([]);
 const sortBy = ref('date-asc');
 const filterType = ref('all');
 const currentPage = ref(1);
-const itemsPerPage = 9;
+const itemsPerPage = 8;
 
 // 個人資料浮動視窗狀態
 const showProfileBox = ref(false);
