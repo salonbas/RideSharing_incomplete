@@ -1,26 +1,19 @@
 //src\views\LoginPage.vue
 <template>
-  <div class="min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-sm p-6 bg-white rounded shadow">
-      <h2 class="text-2xl font-bold mb-4">Login</h2>
-      <form @submit.prevent="handleLogin"> 
-        <input v-model="username" type="text" placeholder="帳號" class="input mb-3" />
-        <input v-model="password" type="password" class="input mb-3" />
-        <button type="submit" class="btn w-full">Login</button>
-        <router-link to="/forgot-password" class="text-sm text-blue-600 hover:underline block mt-2">Forgot Password?</router-link>
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-b from-yellow-300 to-black">
+    <div class="w-full max-w-md md:max-w-lg lg:max-w-xl p-8 bg-white rounded-lg shadow-xl">
+      <h2 class="text-3xl font-semibold mb-6 text-center font-sans">登入</h2>
+      <form @submit.prevent="handleLogin">
+        <input type="email" placeholder="Email" class="input mb-4" />
+        <input type="password" placeholder="Password" class="input mb-4" />
+        <button type="submit" class="btn w-full">登入</button>
+        <router-link to="/forgot-password" class="text-sm text-blue-600 hover:underline block mt-3 text-center">
+          忘記密碼？
+        </router-link>
       </form>
     </div>
   </div>
 </template>
-
-<style scoped>
-.input {
-  @apply w-full px-3 py-2 border rounded;
-}
-.btn {
-  @apply bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded;
-}
-</style>
 
 <script setup>
 import { ref } from 'vue'
@@ -58,5 +51,22 @@ async function handleLogin() {
     alert('登入失敗')
   }
 }
-
 </script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+.input {
+  @apply w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn {
+  @apply bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition;
+  font-family: 'Inter', sans-serif;
+}
+
+h2 {
+  font-family: 'Inter', sans-serif;
+}
+</style>

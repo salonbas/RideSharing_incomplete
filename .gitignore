@@ -40,3 +40,7 @@ app.db
 *.pyd
 *.sqlite3
 *.egg-info/
+
+# Python virtual environment
+venv/
+.venv/
