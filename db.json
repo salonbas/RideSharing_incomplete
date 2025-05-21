@@ -8,34 +8,298 @@
         "avatar": "/xxx.png"
       },
       "type": "ridesharing",
-      "title": "搭計程車到彰化火車站",
-      "description": "7月4號台中市政府集合",
+      "title": "共乘從新竹市到台中市",
+      "description": "07月01號 14:00 新竹火車站 出發，一起去 台中公園",
       "location": {
         "from": {
+          "city": "新竹市",
+          "detail": "新竹火車站"
+        },
+        "destination": {
           "city": "台中市",
-          "detail": "台中市政府前"
+          "detail": "台中公園"
+        }
+      },
+      "requiredSeats": 3,
+      "joinedSeats": 2,
+      "date": "2025-07-01T14:00:00"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "共乘從台北市到高雄市",
+      "description": "07月02號 12:00 台北車站 出發，一起去 夢時代",
+      "location": {
+        "from": {
+          "city": "台北市",
+          "detail": "台北車站"
         },
         "destination": {
           "city": "高雄市",
-          "detail": "愛河旁邊的煙火會場"
+          "detail": "夢時代"
+        }
+      },
+      "requiredSeats": 3,
+      "joinedSeats": 1,
+      "date": "2025-07-02T12:00:00"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "共乘從嘉義市到新竹市",
+      "description": "07月03號 10:00 文化路夜市 出發，一起去 新竹火車站",
+      "location": {
+        "from": {
+          "city": "嘉義市",
+          "detail": "文化路夜市"
+        },
+        "destination": {
+          "city": "新竹市",
+          "detail": "新竹火車站"
         }
       },
       "requiredSeats": 4,
       "joinedSeats": 2,
+      "date": "2025-07-03T10:00:00"
+    },
+    {
+      "id": 4,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "共乘從台南市到台北市",
+      "description": "07月04號 17:00 台南火車站 出發，一起去 台北車站",
+      "location": {
+        "from": {
+          "city": "台南市",
+          "detail": "台南火車站"
+        },
+        "destination": {
+          "city": "台北市",
+          "detail": "台北車站"
+        }
+      },
+      "requiredSeats": 5,
+      "joinedSeats": 2,
       "date": "2025-07-04T17:00:00"
+    },
+    {
+      "id": 5,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "共乘從新竹市到高雄市",
+      "description": "07月05號 14:00 新竹火車站 出發，一起去 夢時代",
+      "location": {
+        "from": {
+          "city": "新竹市",
+          "detail": "新竹火車站"
+        },
+        "destination": {
+          "city": "高雄市",
+          "detail": "夢時代"
+        }
+      },
+      "requiredSeats": 3,
+      "joinedSeats": 1,
+      "date": "2025-07-05T14:00:00"
+    },
+    {
+      "id": 6,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "共乘從高雄市到新竹市",
+      "description": "07月06號 09:00 夢時代 出發，一起去 新竹火車站",
+      "location": {
+        "from": {
+          "city": "高雄市",
+          "detail": "夢時代"
+        },
+        "destination": {
+          "city": "新竹市",
+          "detail": "新竹火車站"
+        }
+      },
+      "requiredSeats": 4,
+      "joinedSeats": 3,
+      "date": "2025-07-06T09:00:00"
+    },
+    {
+      "id": 7,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "共乘從台北市到台南市",
+      "description": "07月07號 11:00 台北車站 出發，一起去 台南火車站",
+      "location": {
+        "from": {
+          "city": "台北市",
+          "detail": "台北車站"
+        },
+        "destination": {
+          "city": "台南市",
+          "detail": "台南火車站"
+        }
+      },
+      "requiredSeats": 2,
+      "joinedSeats": 0,
+      "date": "2025-07-07T11:00:00"
+    },
+    {
+      "id": 8,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "共乘從嘉義市到高雄市",
+      "description": "07月08號 15:00 文化路夜市 出發，一起去 夢時代",
+      "location": {
+        "from": {
+          "city": "嘉義市",
+          "detail": "文化路夜市"
+        },
+        "destination": {
+          "city": "高雄市",
+          "detail": "夢時代"
+        }
+      },
+      "requiredSeats": 3,
+      "joinedSeats": 1,
+      "date": "2025-07-08T15:00:00"
+    },
+    {
+      "id": 9,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "共乘從台中市到嘉義市",
+      "description": "07月09號 13:00 台中公園 出發，一起去 文化路夜市",
+      "location": {
+        "from": {
+          "city": "台中市",
+          "detail": "台中公園"
+        },
+        "destination": {
+          "city": "嘉義市",
+          "detail": "文化路夜市"
+        }
+      },
+      "requiredSeats": 5,
+      "joinedSeats": 2,
+      "date": "2025-07-09T13:00:00"
+    },
+    {
+      "id": 10,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "共乘從台中市到台北市",
+      "description": "07月10號 10:00 台中公園 出發，一起去 台北車站",
+      "location": {
+        "from": {
+          "city": "台中市",
+          "detail": "台中公園"
+        },
+        "destination": {
+          "city": "台北市",
+          "detail": "台北車站"
+        }
+      },
+      "requiredSeats": 2,
+      "joinedSeats": 1,
+      "date": "2025-07-10T10:00:00"
+    },
+    {
+      "id": 11,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "共乘從新竹市到嘉義市",
+      "description": "07月11號 12:00 新竹火車站 出發，一起去 文化路夜市",
+      "location": {
+        "from": {
+          "city": "新竹市",
+          "detail": "新竹火車站"
+        },
+        "destination": {
+          "city": "嘉義市",
+          "detail": "文化路夜市"
+        }
+      },
+      "requiredSeats": 4,
+      "joinedSeats": 2,
+      "date": "2025-07-11T12:00:00"
+    },
+    {
+      "id": 12,
+      "userId": 1,
+      "organizer": {
+        "nickname": "小明",
+        "avatar": "/xxx.png"
+      },
+      "type": "ridesharing",
+      "title": "共乘從高雄市到台中市",
+      "description": "07月12號 16:00 夢時代 出發，一起去 台中公園",
+      "location": {
+        "from": {
+          "city": "高雄市",
+          "detail": "夢時代"
+        },
+        "destination": {
+          "city": "台中市",
+          "detail": "台中公園"
+        }
+      },
+      "requiredSeats": 3,
+      "joinedSeats": 2,
+      "date": "2025-07-12T16:00:00"
     }
   ],
   "users": [
     {
-        "id": 1,
-        "username": "user1_account",
-        "password": "123456",
-        "nickname": "user1的暱稱",
-        "avatarUrl": "/default-avatar.png",
-        "instagram": "https://instagram.com/xxx",
-        "email": "user1@example.com",
-        "phone": "0912345678",
-        "bio": "哈囉這是我的個人簡介"
+      "id": 1,
+      "username": "user1_account",
+      "password": "123456",
+      "nickname": "user1的暱稱",
+      "avatarUrl": "/default-avatar.png",
+      "instagram": "https://instagram.com/xxx",
+      "email": "user1@example.com",
+      "phone": "0912345678",
+      "bio": "哈囉這是我的個人簡介"
     },
     {
       "id": 2,
