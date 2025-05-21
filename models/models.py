@@ -53,6 +53,13 @@ class Event(Base):
     requiredSeats = Column(Integer)
     joinedSeats = Column(Integer)
     organizer_id = Column(Integer, ForeignKey("users.id"))
+
+    # 🆕 新增這四個欄位
+    from_city = Column(String)
+    from_detail = Column(String)
+    to_city = Column(String)
+    to_detail = Column(String)
+
     organizer = relationship("User", back_populates="events")
     participants = relationship("User", secondary=user_event_association, back_populates="joined_events")
 
@@ -65,9 +72,20 @@ class Event(Base):
             "date": self.date.isoformat(),
             "requiredSeats": self.requiredSeats,
             "joinedSeats": self.joinedSeats,
+            "spotsRemaining": self.requiredSeats - self.joinedSeats,
             "organizer": {
                 "id": self.organizer.id,
                 "nickname": self.organizer.nickname,
                 "avatarUrl": self.organizer.avatarUrl,
+            },
+            "location": {
+                "from": {
+                    "city": self.from_city,
+                    "detail": self.from_detail
+                },
+                "destination": {
+                    "city": self.to_city,
+                    "detail": self.to_detail
+                }
             }
         }
