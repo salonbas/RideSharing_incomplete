@@ -5,6 +5,7 @@ import LoginPage from '@/views/LoginPage.vue';
 import ForgotPasswordPage from '@/views/ForgotPasswordPage.vue';
 import CreatePasswordPage from '@/views/CreatePasswordPage.vue';
 import PersonalInfoPage from '@/views/PersonalInfoPage.vue';
+import MyEventsPage from '@/views/MyEventsPage.vue';
 import NotFoundView from '@/views/NotFoundView.vue'
 
 
@@ -17,6 +18,7 @@ const router = createRouter({
     { path: '/forgot-password', name: 'forgotPassword', component: ForgotPasswordPage },
     { path: '/create-password', name: 'createPassword', component: CreatePasswordPage },
     { path: '/profile', name: 'personalInfo', component: PersonalInfoPage },
+    { path: '/my-events', name: 'myEvents', component: MyEventsPage },
     { path: '/:catchAll(.*)', name: 'NotFound', component: NotFoundView },
   ],
 });

@@ -5,75 +5,61 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
 
+步驟	        指令	                        說明
+1	    python -m venv venv	                建立虛擬環境（只做一次）
+2	    venv\\Scripts\\activate	            進入虛擬環境（每次都做）
+3	    pip install -r requirements.txt	    安裝 Python 套件
+4	    npm install	                        安裝前端套件（只做一次）
+5	    npm run dev	                        開 Vue 前端（單獨用）
+6	    python controllers/app.py	         開 Flask 後端（單獨用）
+進階	npm run start	                     同時開前後端
+
+跑 init_db.py初始化:
+$env:PYTHONPATH="C:\Users\user\RideSharing"
+python init_db.py
+
+什麼時候需要跑 init_db.py？
+    時機	            要不要跑
+第一次建立資料庫	    ✅ 要
+刪除 app.db 後重建	    ✅ 要
+加了新的欄位或表格	    ✅ 要（或用 Alembic 做 migration）
+正式伺服器部署前	    ✅ 要在 production 建表
+
+
+requirement:
+tailwind 請安裝3.4.14
+flask
+flask-cors
+flask-jwt-extended
+sqlalchemy
+python-dotenv
+
+如何建立虛擬環境
+# 建立名為 venv 的虛擬環境
+python -m venv venv
+
 可用指令:
+num run dev
 tree /F
+json-server --watch db.json --port 3000
+python controllers/app.py
+
 
 安裝必要套件:
-npm install @headlessui/vue
+npm install -g json-server
+npm install axios
 npm install pinia
+npm install vue-router
 npm install @vueuse/core
+npm install --save-dev concurrently
+pip install flask flask-cors flask-jwt-extended sqlalchemy python-dotenv
+pip freeze > requirements.txt
 
 
-tailwind 請安裝3.4.14
 
-專案架構:(請在vscode打開 以防格式跑掉)    
-C:.
-├─.vscode
-├─node_modules
-├─public
-│      vite.svg
-│
-└─src
-    │  App.vue
-    │  data.json
-    │  main.js
-    │  style.css
-    │
-    ├─assets
-    │      vue.svg
-    │
-    ├─components
-    │  ├─Event
-    │  │      EventCard.vue
-    │  │      EventFilterSort.vue
-    │  │
-    │  ├─Layout
-    │  │      Footer.vue
-    │  │      MainLayout.vue
-    │  │      Navbar.vue
-    │  │
-    │  ├─Profile
-    │  │      ProfileAvatar.vue
-    │  │      ProfileBox.vue
-    │  │      ProfileField.vue
-    │  │      ProfilePhone.vue
-    │  │
-    │  └─Video
-    │          VideoCard.vue
-    │
-    ├─components_reference
-    │      BackButton.vue
-    │      Card.vue
-    │      Hero.vue
-    │      HomeCards.vue
-    │      JobListing.vue
-    │      JobListings.vue
-    │      Navbar.vue
-    │
-    ├─router
-    │      index.js
-    │
-    ├─views
-    │      EventListPage.vue
-    │      HomePage.vue
-    │
-    └─views_reference
-            AddJobView.vue
-            EditJobView.vue
-            HomeView.vue
-            JobsView.vue
-            JobView.vue
-            NotFoundView.vue
+以下刪掉了(目前):
+npm install @headlessui/vue
+npm install @vueuse/core
 
 
 note:components不只Profile這個folder
@@ -108,7 +94,12 @@ to do list(may have been done, feel free to double-check):
 - Tailwind 調整行距、文字樣式、間距
 - ProfileBox.vue 可加入「更改密碼」按鈕，點擊後導航至 /change-password
 - 在 App.vue 中用 <MainLayout> 包裹所有 <router-view />
-
+- EventsListPage 資料太多時是否要「分頁載入」？
+    判斷依據：資料筆數 > 200 就建議分頁（分次請求）
+    若一次抓不到全部用戶的資料，例如 IG/Facebook，一定要分批（pagination + infinite scroll）
+    你目前活動不多 → 先用一次性讀取即可，未來可以擴充成：
+        GET /events?page=2&limit=20
+- 
 
 Layout/ 資料夾的設立，正是為了放置頁面骨架相關的元件，這些元件不屬於任何單一業務邏輯，但會在多數頁面中重複出現。
 Layout/ 常見放置內容：

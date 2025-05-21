@@ -84,13 +84,15 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import NavBar from '../components/Layout/NavBar.vue';
-import EventCard from '../components/Event/EventCard.vue';
-import EventFilterSort from '../components/Event/EventFilterSort.vue';
-import PaginationBar from '../components/Event/PaginationBar.vue';
-import ProfileBox from '../components/Profile/ProfileBox.vue';
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
+import axios from 'axios'
+import NavBar from '../components/Layout/NavBar.vue'
+import EventCard from '../components/Event/EventCard.vue'
+import EventFilterSort from '../components/Event/EventFilterSort.vue'
+import PaginationBar from '../components/Event/PaginationBar.vue'
+import ProfileBox from '../components/Profile/ProfileBox.vue'
 
 // 路由相關
 const router = useRouter();
@@ -122,7 +124,6 @@ onMounted(() => {
     sortBy.value = route.query.sort;
   }
   
-  // 模擬 API 載入
   fetchEvents();
 });
 
@@ -153,24 +154,50 @@ const handlePageChange = (page) => {
   });
 };
 
-// 顯示個人資料
-const showProfile = (organizer) => {
-  selectedOrganizer.value = organizer;
-  showProfileBox.value = true;
-};
+const showProfile = async (userId) => {
+  try {
+    const res = await axios.get(`http://localhost:5000/users/${userId}`)
+    selectedOrganizer.value = res.data
+    showProfileBox.value = true
+  } catch (err) {
+    console.error('載入 organizer 資料失敗:', err)
+    alert('載入個人資料失敗')
+  }
+}
 
 // 處理加入活動
-const handleJoinEvent = (eventId) => {
-  const isLoggedIn = true; // 假設已登入
-  
-  if (!isLoggedIn) {
-    alert('請先登入再申請加入活動');
-    return;
+const auth = useAuthStore()
+const handleJoinEvent = async (eventId) => {
+  console.log("申請加入活動", eventId)
+  console.log("token:", auth.token)
+
+  if (!auth.isLoggedIn) {
+    alert('請先登入再申請加入活動')
+    return
   }
-  
-  alert(`已申請加入活動 ID: ${eventId}`);
-  // 在實際應用程式中這裡會呼叫 API
-};
+
+  try {
+    const formattedEventId = typeof eventId === 'string' ? parseInt(eventId, 10) : eventId
+
+    const response = await auth.joinEvent(formattedEventId)
+
+    console.log('加入成功:', response)
+    alert('成功申請加入活動')
+
+    // 重新取得活動資料（你需自行實作 fetchEvents()）
+    await fetchEvents?.()
+  } catch (err) {
+    console.error('加入活動錯誤:', err)
+
+    const msg =
+      err?.response?.data?.error ||
+      err?.response?.data?.msg ||
+      err.message ||
+      '未知錯誤'
+
+    alert(`申請失敗：${msg}`)
+  }
+}
 
 // 導航到創建活動頁面
 const navigateToCreateEvent = () => {
@@ -215,7 +242,8 @@ const filteredEvents = computed(() => {
         return 0;
     }
   });
-  
+  console.log('篩選後剩餘event數量:', result.length)
+
   return result;
 });
 
@@ -231,217 +259,16 @@ const eventsToDisplay = computed(() => {
   return filteredEvents.value.slice(startIndex, endIndex);
 });
 
-// 模擬 API 載入資料
-const fetchEvents = () => {
-  // 假資料
-  setTimeout(() => {
-    events.value = [
-      {
-        id: 1,
-        type: 'carpool',
-        title: '台北到花蓮共乘',
-        location: '台北市',
-        datetime: '2025-05-15T08:30:00',
-        price: 350,
-        spotsRemaining: 3,
-        organizer: {
-          id: 101,
-          avatar: 'https://i.pravatar.cc/150?img=1',
-          nickname: '阿德',
-          account: 'driver_dave',
-          instagram: '@dave_taipei',
-          phoneNumber: '0912-345-678'
-        }
-      },
-      {
-        id: 2,
-        type: 'drink',
-        title: '週五微醺夜',
-        location: '台北市',
-        datetime: '2025-05-17T20:00:00',
-        price: 500,
-        spotsRemaining: 5,
-        organizer: {
-          id: 102,
-          avatar: 'https://i.pravatar.cc/150?img=2',
-          nickname: '小美',
-          account: 'party_mei',
-          instagram: '@mei_party',
-          phoneNumber: '0923-456-789'
-        }
-      },
-      {
-        id: 3,
-        type: 'sports',
-        title: '籃球三對三',
-        location: '新北市',
-        datetime: '2025-05-14T18:00:00',
-        price: 150,
-        spotsRemaining: 1,
-        organizer: {
-          id: 103,
-          avatar: 'https://i.pravatar.cc/150?img=3',
-          nickname: '小偉',
-          account: 'basketball_wei',
-          instagram: '@wei_bball',
-          phoneNumber: '0934-567-890'
-        }
-      },
-      {
-        id: 4,
-        type: 'sports',
-        title: '羽球友誼賽',
-        location: '台中市',
-        datetime: '2025-05-20T19:30:00',
-        price: 200,
-        spotsRemaining: 7,
-        organizer: {
-          id: 104,
-          avatar: 'https://i.pravatar.cc/150?img=4',
-          nickname: '小芳',
-          account: 'badminton_fang',
-          instagram: '@fang_sports',
-          phoneNumber: '0945-678-901'
-        }
-      },
-      {
-        id: 5,
-        type: 'carpool',
-        title: '高雄到墾丁共乘',
-        location: '高雄市',
-        datetime: '2025-05-22T07:00:00',
-        price: 250,
-        spotsRemaining: 2,
-        organizer: {
-          id: 105,
-          avatar: 'https://i.pravatar.cc/150?img=5',
-          nickname: '阿明',
-          account: 'drive_ming',
-          instagram: '@ming_driver',
-          phoneNumber: '0956-789-012'
-        }
-      },
-      {
-        id: 6,
-        type: 'drink',
-        title: '調酒品嚐會',
-        location: '台南市',
-        datetime: '2025-05-18T19:00:00',
-        price: 650,
-        spotsRemaining: 8,
-        organizer: {
-          id: 106,
-          avatar: 'https://i.pravatar.cc/150?img=6',
-          nickname: '小婷',
-          account: 'cocktail_ting',
-          instagram: '@ting_drinks',
-          phoneNumber: '0967-890-123'
-        }
-      },
-      {
-        id: 7,
-        type: 'sports',
-        title: '晨跑團',
-        location: '台北市',
-        datetime: '2025-05-16T06:00:00',
-        price: 0,
-        spotsRemaining: 15,
-        organizer: {
-          id: 107,
-          avatar: 'https://i.pravatar.cc/150?img=7',
-          nickname: '教練',
-          account: 'morning_runner',
-          instagram: '@taipei_runners',
-          phoneNumber: '0978-901-234'
-        }
-      },
-      {
-        id: 8,
-        type: 'carpool',
-        title: '台中到南投共乘',
-        location: '台中市',
-        datetime: '2025-05-19T09:30:00',
-        price: 180,
-        spotsRemaining: 1,
-        organizer: {
-          id: 108,
-          avatar: 'https://i.pravatar.cc/150?img=8',
-          nickname: '小強',
-          account: 'driver_strong',
-          instagram: '@strong_driver',
-          phoneNumber: '0989-012-345'
-        }
-      },
-      {
-        id: 9,
-        type: 'drink',
-        title: '精釀啤酒品嚐',
-        location: '新北市',
-        datetime: '2025-05-21T18:30:00',
-        price: 450,
-        spotsRemaining: 4,
-        organizer: {
-          id: 109,
-          avatar: 'https://i.pravatar.cc/150?img=9',
-          nickname: '小軒',
-          account: 'beer_xuan',
-          instagram: '@xuan_beers',
-          phoneNumber: '0990-123-456'
-        }
-      },
-      {
-        id: 10,
-        type: 'sports',
-        title: '瑜珈課程',
-        location: '台北市',
-        datetime: '2025-05-23T10:00:00',
-        price: 300,
-        spotsRemaining: 6,
-        organizer: {
-          id: 110,
-          avatar: 'https://i.pravatar.cc/150?img=10',
-          nickname: '瑜老師',
-          account: 'yoga_teacher',
-          instagram: '@yoga_taipei',
-          phoneNumber: '0901-234-567'
-        }
-      },
-      {
-        id: 11,
-        type: 'drink',
-        title: '紅酒品嚐會',
-        location: '台北市',
-        datetime: '2025-05-25T19:00:00',
-        price: 750,
-        spotsRemaining: 9,
-        organizer: {
-          id: 111,
-          avatar: 'https://i.pravatar.cc/150?img=11',
-          nickname: '小紅',
-          account: 'wine_hong',
-          instagram: '@hong_wines',
-          phoneNumber: '0912-345-678'
-        }
-      },
-      {
-        id: 12,
-        type: 'carpool',
-        title: '台北到宜蘭共乘',
-        location: '台北市',
-        datetime: '2025-05-26T14:00:00',
-        price: 200,
-        spotsRemaining: 2,
-        organizer: {
-          id: 112,
-          avatar: 'https://i.pravatar.cc/150?img=12',
-          nickname: '小李',
-          account: 'driver_li',
-          instagram: '@li_driver',
-          phoneNumber: '0923-456-789'
-        }
-      }
-    ];
-    loading.value = false;
-  }, 800); // 模擬載入延遲
-};
+const fetchEvents = async () => {
+  loading.value = true
+  try {
+    const res = await axios.get('http://localhost:5000/events')
+    events.value = res.data
+  } catch (err) {
+    console.error('❌ 無法取得活動資料:', err)
+  } finally {
+    loading.value = false
+  }
+  console.log('✅ 活動資料已載入', events.value)
+}
 </script>

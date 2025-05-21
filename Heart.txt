@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>愛心軌跡小圓圈</title>
+</head>
+<body>
+  <svg width="600" height="600" viewBox="-300 -300 600 600" style="background: #fff;">
+  
+  </svg>
+
+
+  <script>
+    const svg = document.querySelector("svg")
+    const r = 2; // 小圓半徑
+    const step = 0.1; // t 增量
+    const scale = 10; // 放大倍數
+
+    for (let t = 0; t < Math.PI * 2; t += step) {
+      // 愛心參數方程式
+      const x = 16 * Math.pow(Math.sin(t), 3);
+      const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", x * scale);
+      circle.setAttribute("cy", -y * scale); // SVG Y 軸向下，要取反
+      circle.setAttribute("r", r);
+      circle.setAttribute("fill", "red");
+      svg.appendChild(circle);
+    }
+  </script>
+</body>
+</html>

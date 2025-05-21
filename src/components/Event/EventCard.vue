@@ -6,7 +6,7 @@
     <!-- 🧑 頭像 -->
     <div
       class="flex-shrink-0 h-14 w-14 rounded-full overflow-hidden cursor-pointer"
-      @click="$emit('show-profile', eventData.organizer)"
+      @click="$emit('show-profile', eventData.userId)"
     >
       <img
         :src="eventData.organizer.avatar"
@@ -70,7 +70,7 @@ const formattedDate = computed(() => {
 // 計算活動類型標籤與顏色
 const typeLabel = computed(() => {
   switch (props.eventData.type) {
-    case 'carpool':
+    case 'ridesharing':
       return '共乘';
     case 'drink':
       return '飲酒';
@@ -83,7 +83,7 @@ const typeLabel = computed(() => {
 
 const typeColorClass = computed(() => {
   switch (props.eventData.type) {
-    case 'carpool':
+    case 'ridesharing':
       return 'bg-green-100 text-green-600';
     case 'drink':
       return 'bg-blue-100 text-blue-600';
