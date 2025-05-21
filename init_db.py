@@ -8,16 +8,20 @@ from sqlalchemy.orm import sessionmaker
 from models.models import Base, User, Event
 from config.config import DATABASE_URL
 
+# 建立資料庫連線
 engine = create_engine(DATABASE_URL, echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+# 重建所有資料表
 Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 
+# 讀取 JSON 檔案
 with open("db.json", encoding="utf-8") as f:
     data = json.load(f)
 
+# 儲存 user 實體以供後續 event 使用
 user_dict = {}
 for u in data["users"]:
     user = User(
@@ -34,6 +38,7 @@ for u in data["users"]:
     user_dict[u["id"]] = user
     session.add(user)
 
+# 新增活動資料，包含地點資訊
 for e in data["events"]:
     event = Event(
         id=e["id"],
@@ -43,9 +48,14 @@ for e in data["events"]:
         date=datetime.fromisoformat(e["date"]),
         requiredSeats=e.get("requiredSeats", 0),
         joinedSeats=e.get("joinedSeats", 0),
-        organizer=user_dict[e["userId"]]
+        organizer=user_dict[e["userId"]],
+        from_city=e.get("location", {}).get("from", {}).get("city", ""),
+        from_detail=e.get("location", {}).get("from", {}).get("detail", ""),
+        to_city=e.get("location", {}).get("destination", {}).get("city", ""),
+        to_detail=e.get("location", {}).get("destination", {}).get("detail", "")
     )
     session.add(event)
 
+# 提交變更
 session.commit()
 print("✅ 資料庫初始化完成")
