@@ -50,11 +50,14 @@
               剩 {{ eventData.spotsRemaining }} 人
           </div>
           <button
-            class="link-btn link-btn-disabled border-animate"
+            class="link-btn"
             @click="$emit('join-event', eventData.id)"
             :disabled="eventData.spotsRemaining <= 0"
           >
             {{ eventData.spotsRemaining > 0 ? '卡' : '不能卡' }}
+            <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+              <rect x="3" y="3" width="94" height="34" rx="17" ry="17" />
+            </svg>
           </button>
         </div>
       </div>
