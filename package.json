@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start-backend": "set PYTHONPATH=./ && python controllers/app.py",
+    "start-backend": "python controllers/app.py",
     "start": "concurrently \"npm run dev\" \"npm run start-backend\""
   },
   "dependencies": {

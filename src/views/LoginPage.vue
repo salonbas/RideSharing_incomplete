@@ -3,14 +3,27 @@
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-b from-yellow-300 to-black">
     <div class="w-full max-w-md md:max-w-lg lg:max-w-xl p-8 bg-white rounded-lg shadow-xl">
       <h2 class="text-3xl font-semibold mb-6 text-center font-sans">登入</h2>
-      <form @submit.prevent="handleLogin">
-        <input type="email" placeholder="Email" class="input mb-4" />
-        <input type="password" placeholder="Password" class="input mb-4" />
-        <button type="submit" class="btn w-full">登入</button>
-        <router-link to="/forgot-password" class="text-sm text-blue-600 hover:underline block mt-3 text-center">
-          忘記密碼？
-        </router-link>
-      </form>
+        <form @submit.prevent="handleLogin">
+          <input
+            type="text"
+            v-model="username"
+            placeholder="username"
+            class="input mb-4"
+          />
+          <input
+          type="password"
+          v-model="password"
+          placeholder="Password"
+          class="input mb-4"
+          />
+          <button type="submit" class="btn w-full">登入</button>
+          <router-link to="/forgot-password" class="text-sm text-blue-600 hover:underline block mt-3 text-center">
+            忘記密碼？
+          </router-link>
+          <router-link to="/create-password" class="text-sm text-blue-600 hover:underline block mt-3 text-center">
+           創建帳號
+          </router-link>
+        </form>
     </div>
   </div>
 </template>

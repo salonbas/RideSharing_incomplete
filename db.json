@@ -26,7 +26,7 @@
     },
     {
       "id": 2,
-      "userId": 1,
+      "userId": 2,
       "organizer": {
         "nickname": "小明",
         "avatar": "/xxx.png"

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-black text-white rounded-2xl p-6 shadow-lg backdrop-blur-sm max-w-md w-full">
+  <div class="bg-white/10 text-white rounded-2xl p-6 shadow-lg backdrop-blur-sm max-w-md w-full">
     <div class="flex items-center gap-4 mb-4">
       <img
         :src="user.avatarUrl || '/default-avatar.png'"

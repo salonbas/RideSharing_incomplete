@@ -27,11 +27,11 @@
           個人資料
         </RouterLink>
         <RouterLink
-          to="/myEvent"
+          to="/my-events"
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100"
           @click="closeMenu"
         >
-          個人資料
+          我的活動
         </RouterLink>
         <button
           class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100"
