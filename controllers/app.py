@@ -173,7 +173,7 @@ from services import auth_service, profile_service, event_service
 from config.config import JWT_SECRET_KEY
 
 import services.event_service
-print("✅ 目前載入的 event_service 是：", services.event_service.__file__)
+print("目前載入的 event_service 是：", services.event_service.__file__)
 
 
 app = Flask(__name__)
@@ -197,6 +197,14 @@ def login():
         "token": token,
         "user": user.to_dict()
     })
+
+# === 取得其他使用者的公開資料 ===
+@app.get("/users/<int:user_id>")
+def get_public_user(user_id):
+    user = profile_service.get_public_user_profile(user_id)
+    if not user:
+        return jsonify({"msg": "使用者不存在"}), 404
+    return jsonify(user)
 
 # === 取得個人檔案 ===
 @app.get("/profile")

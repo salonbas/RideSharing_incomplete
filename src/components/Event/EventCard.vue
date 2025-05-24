@@ -9,7 +9,7 @@
         <!-- 🧑 頭像 -->
         <div
           class="h-full aspect-square rounded-full overflow-hidden cursor-pointer"
-          @click="$emit('show-profile', eventData.organizer)"
+          @click="$emit('show-profile', eventData.organizer.id)"
         >
           <img
             :src="eventData.organizer.avatar"
