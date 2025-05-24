@@ -1,39 +1,39 @@
 // components/Event/EventCard.vue
 <template>
-  <div
-    class="w-full h-[40vh] bg-white/10 backdrop-blur-sm text-white rounded-[28px] shadow-md hover:scale-[1.02] transition p-4 flex flex-col"
-  >
-    <div class="flex-1 flex mb-2">
-      <!-- 上半部：頭像 + 主辦人與路線 -->
-      <div class="w-1/2 h-full flex items-center justify-center p-6">
-        <!-- 🧑 頭像 -->
-        <div
-          class="h-full aspect-square rounded-full overflow-hidden cursor-pointer"
-          @click="$emit('show-profile', eventData.organizer.id)"
-        >
-          <img
-            :src="eventData.organizer.avatar"
-            :alt="eventData.organizer.nickname"
-            class="h-full w-full object-cover"
-          />
-        </div>
-      </div>
-      <!-- 👤 名字 + 路線 -->
-      <div class="w-1/2 flex flex-col justify-center items-center pl-2">
-        <div class="text-xl font-semibold truncate">
-            {{ eventData.organizer.nickname }}
+  <div class="card-wrapper">
+    <div class="card-inner group">
+      <div class="card-face">
+        <div class="flex-1 flex mb-2">
+          <!-- 上半部：頭像 + 主辦人與路線 -->
+          <div class="w-1/2 h-full flex items-center justify-center p-6">
+            <!-- 🧑 頭像 -->
+            <div
+              class="h-full aspect-square rounded-full overflow-hidden cursor-pointer"
+              @click="$emit('show-profile', eventData.organizer.id)"
+            >
+            <img
+              :src="eventData.organizer.avatar"
+              :alt="eventData.organizer.nickname"
+              class="h-full w-full object-cover"
+            />
           </div>
-          <div class="text-sm text-gray-300 w-full break-words whitespace-normal">
+        </div>
+        <!-- 👤 名字 + 路線 -->
+        <div class="w-1/2 flex flex-col justify-center items-center pl-2 ">
+          <div class="text-xl font-semibold truncate group-hover:text-[#1a1a1a]">
+              {{ eventData.organizer.nickname }}
+          </div>
+          <div class="text-sm text-gray-300 w-full break-words whitespace-normal group-hover:text-[#1a1a1a]">
             {{ eventData.location.from.city }} {{ eventData.location.from.detail }}
-            →
+             →
             {{ eventData.location.destination.city }} {{ eventData.location.destination.detail }}
           </div>
+        </div>
       </div>
-    </div>
 
       <div class="flex-1 flex">
       <!-- 下半部：資訊 3:1 -->
-      <div class="w-3/4 space-y-1 text-sm text-gray-300 flex flex-col justify-center items-start pl-4">
+      <div class="w-3/4 space-y-1 text-sm text-gray-300 flex flex-col justify-center items-start pl-4 group-hover:text-[#1a1a1a]">
           <div>時間： {{ formattedDate }}</div>
           <div>金額： {{ eventData.price === 0 ? '免費' : `$${eventData.price}` }}</div>
           <div>地點： {{ eventData.location.from.city }} {{ eventData.location.from.detail }}
@@ -50,14 +50,21 @@
               剩 {{ eventData.spotsRemaining }} 人
           </div>
           <button
-            class="link-btn link-btn-disabled border-animate"
+            class="btn bg-[#12150e]"
             @click="$emit('join-event', eventData.id)"
             :disabled="eventData.spotsRemaining <= 0"
           >
-            {{ eventData.spotsRemaining > 0 ? '卡' : '不能卡' }}
+            <span class="btn-text group-hover:text-[#1a1a1a]">
+             {{ eventData.spotsRemaining > 0 ? '卡' : '不能卡' }}
+            </span>
+            <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+              <rect x="3" y="3" width="94" height="34" rx="17" ry="17" />
+            </svg>
           </button>
+          </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
 <script setup>

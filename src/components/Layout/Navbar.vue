@@ -16,14 +16,14 @@
         <div class="hidden md:flex space-x-12 items-center">
           <router-link 
             to="/" 
-            class="link-btn font-sans text-lg"
+            class="btn font-sans text-lg"
             :class="{ 'text-blue-600 font-medium': isActive('/') }"
           >
             首頁
           </router-link>
           <router-link 
             to="/events" 
-            class="link-btn font-sans text-lg"
+            class="btn font-sans text-lg"
             :class="{ 'text-blue-600 font-medium': isActive('/events') }"
           >
             活動列表
