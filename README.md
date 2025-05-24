@@ -14,6 +14,9 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 6	    python controllers/app.py	         開 Flask 後端（單獨用）
 進階	npm run start	                     同時開前後端
 
+$env:PYTHONPATH="C:\Users\user\RideSharing"                                                   
+python controllers/app.py   
+
 跑 init_db.py初始化:
 $env:PYTHONPATH="C:\Users\user\RideSharing"
 python init_db.py
@@ -54,7 +57,7 @@ npm install @vueuse/core
 npm install --save-dev concurrently
 pip install flask flask-cors flask-jwt-extended sqlalchemy python-dotenv
 pip freeze > requirements.txt
-
+pip install werkzeug
 
 
 以下刪掉了(目前):

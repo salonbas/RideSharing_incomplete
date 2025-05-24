@@ -49,3 +49,5 @@ onMounted(() => {
   fetchJoinedEvents()
 })
 </script>
+
+
