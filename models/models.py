@@ -59,14 +59,13 @@ class Event(Base):
     type = Column(String)
     date = Column(DateTime)
     requiredSeats = Column(Integer)
-    joinedSeats = Column(Integer)
+    joinedSeats = Column(Integer, default=0)  # 建議加上預設值
     organizer_id = Column(Integer, ForeignKey("users.id"))
-
-    # 🆕 新增這四個欄位
     from_city = Column(String)
     from_detail = Column(String)
     to_city = Column(String)
     to_detail = Column(String)
+    contact_method = Column(String)  # 新增這行
 
     organizer = relationship("User", back_populates="events")
     participants = relationship("User", secondary=user_event_association, back_populates="joined_events")
@@ -81,6 +80,7 @@ class Event(Base):
             "requiredSeats": self.requiredSeats,
             "joinedSeats": self.joinedSeats,
             "spotsRemaining": self.requiredSeats - self.joinedSeats,
+            "contactMethod": self.contact_method,  # 新增這行
             "organizer": {
                 "id": self.organizer.id,
                 "nickname": self.organizer.nickname,

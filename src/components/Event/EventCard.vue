@@ -12,7 +12,7 @@
           @click="$emit('show-profile', eventData.organizer.id)"
         >
           <img
-            :src="eventData.organizer.avatar"
+            :src="eventData.organizer.avatarUrl || '/default-avatar.png'"
             :alt="eventData.organizer.nickname"
             class="h-full w-full object-cover"
           />
