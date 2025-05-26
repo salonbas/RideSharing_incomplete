@@ -16,33 +16,33 @@
               :alt="eventData.organizer.nickname"
               class="h-full w-full object-cover"
             />
+            </div>
           </div>
-        </div>
-        <!-- 👤 名字 + 路線 -->
-        <div class="w-1/2 flex flex-col justify-center items-center pl-2 ">
-          <div class="text-xl font-semibold truncate group-hover:text-[#1a1a1a]">
+          <!-- 👤 名字 + 路線 -->
+          <div class="w-1/2 flex flex-col justify-center items-center pl-2 ">
+            <div class="text-xl font-semibold truncate group-hover:text-[#1a1a1a]">
               {{ eventData.organizer.nickname }}
-          </div>
-          <div class="text-sm text-gray-300 w-full break-words whitespace-normal group-hover:text-[#1a1a1a]">
-            {{ eventData.location.from.city }} {{ eventData.location.from.detail }}
-             →
-            {{ eventData.location.destination.city }} {{ eventData.location.destination.detail }}
+            </div>
+            <div class="text-sm text-gray-300 w-full break-words whitespace-normal group-hover:text-[#1a1a1a]">
+              {{ eventData.location.from.city }} {{ eventData.location.from.detail }}
+              →
+              {{ eventData.location.destination.city }} {{ eventData.location.destination.detail }}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="flex-1 flex">
-      <!-- 下半部：資訊 3:1 -->
-      <div class="w-3/4 space-y-1 text-sm text-gray-300 flex flex-col justify-center items-start pl-4 group-hover:text-[#1a1a1a]">
+        <div class="flex-1 flex">
+        <!-- 下半部：資訊 3:1 -->
+        <div class="w-3/4 space-y-1 text-sm text-gray-300 flex flex-col justify-center items-start pl-4 group-hover:text-[#1a1a1a]">
           <div>時間： {{ formattedDate }}</div>
           <div>金額： {{ eventData.price === 0 ? '免費' : `$${eventData.price}` }}</div>
           <div>地點： {{ eventData.location.from.city }} {{ eventData.location.from.detail }}
                     →
                   {{ eventData.location.destination.city }} {{ eventData.location.destination.detail }}
           </div>
-      </div>
-      <!-- 右側 1 欄 -->
-      <div class="w-1/4 flex flex-col justify-end">
+        </div>
+        <!-- 右側 1 欄 -->
+        <div class="w-1/4 flex flex-col justify-end">
           <div
             class="text-xs mb-0 font-semibold"
             :class="spotsColorClass"
@@ -68,8 +68,9 @@
   </div>
 </template>
 <script setup>
-import { computed } from 'vue'
+import { ref ,computed } from 'vue'
 import { format } from 'date-fns'
+const showAvatarModal = ref(false)
 
 // 解構 props（避免一直 props.eventData）
 const { eventData } = defineProps({
