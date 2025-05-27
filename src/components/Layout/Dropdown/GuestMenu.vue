@@ -65,6 +65,6 @@ onUnmounted(() => {
 
 const pages = [
   { name: '登入', path: '/login' },
-  { name: '建立帳號', path: '/create-password' }
+  { name: '建立帳號', path: '/create-account' }
 ]
 </script>

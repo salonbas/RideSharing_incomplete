@@ -163,6 +163,7 @@ if __name__ == '__main__':
 # 三層式架構下的 Controller：負責接收 HTTP 請求，呼叫對應的 service 層邏輯
 import os
 import sys
+import re
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -173,12 +174,12 @@ from services import auth_service, profile_service, event_service
 from config.config import JWT_SECRET_KEY
 
 import services.event_service
-print("✅ 目前載入的 event_service 是：", services.event_service.__file__)
+print("目前載入的 event_service 是：", services.event_service.__file__)
 
 
 app = Flask(__name__)
-CORS(app)
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
 jwt = JWTManager(app)
 
 # === 登入 ===
@@ -197,6 +198,14 @@ def login():
         "token": token,
         "user": user.to_dict()
     })
+
+# === 取得其他使用者的公開資料 ===
+@app.get("/users/<int:user_id>")
+def get_public_user(user_id):
+    user = profile_service.get_public_user_profile(user_id)
+    if not user:
+        return jsonify({"msg": "使用者不存在"}), 404
+    return jsonify(user)
 
 # === 取得個人檔案 ===
 @app.get("/profile")
@@ -235,6 +244,33 @@ def join_or_cancel_event():
     if "error" in result:
         return jsonify(result), 400
     return jsonify(result)
+
+@app.post("/register")
+def register():
+    data = request.get_json()
+    username = data.get("username", "")
+    password = data.get("password", "")
+    email = data.get("email", "")
+
+    # 基本檢查
+    if not username or not password or not email:
+        return jsonify({"msg": "請填寫所有欄位"}), 400
+
+    # 正規表達式檢查格式
+    if not re.fullmatch(r"^[A-Za-z0-9]{1,10}$", username):
+        return jsonify({"msg": "帳號格式錯誤:限10字內，僅含英數"}), 400
+
+    if not re.fullmatch(r"^[A-Za-z0-9]{1,8}$", password):
+        return jsonify({"msg": "密碼格式錯誤:限8字內，僅含英數"}), 400
+
+    # 檢查帳號是否存在
+    if auth_service.find_user_by_username(username):
+        return jsonify({"msg": "帳號已被使用"}), 409
+
+    # 創建使用者
+    user = auth_service.create_user(username, password, email)
+
+    return jsonify({"msg": "註冊成功", "user": user.to_dict()}), 201
 
 # === 啟動伺服器 ===
 if __name__ == '__main__':

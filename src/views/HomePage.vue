@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <MainLayout>
     <FadeIn>
       <h1 class="text-3xl font-bold">垂直淡入動畫</h1>
@@ -8,10 +8,10 @@
       <p class="text-lg">側向滑入</p>
     </SlideIn>
     <LogoPart/>
-
+ -->
 
     <!-- 增加上方空間讓你 scroll 看動畫 -->
-<div class="h-[100vh] flex items-center justify-center bg-gray-100">
+<!-- <div class="h-[100vh] flex items-center justify-center bg-gray-100">
   <p class="text-xl">請向下滑看看動畫效果</p>
 </div>
 <div class="parallax-demo">
@@ -32,7 +32,6 @@
       </div>
     </Parallax>
     
-    <!-- 多層視差效果 -->
     <Parallax
       :verticalSpeed="0.4"
       :depthLevel="2"
@@ -40,10 +39,10 @@
     >
       <div class="parallax-layer-2">第二層（速度更快）</div>
     </Parallax>
-  </div>
+  </div> -->
 
 <!-- 下方空間避免卡住滾動 -->
-<div class="h-[100vh] bg-gray-50"></div>
+<!-- <div class="h-[100vh] bg-gray-50"></div>
 
 
 
@@ -81,4 +80,142 @@ const videoDataList = [
     url: 'https://www.w3schools.com/html/movie.mp4'
   }
 ];
+</script> -->
+
+
+<!-- //////////////////////////////////////////////////////////////////////////// -->
+<template>
+  <div class="main-page">
+    <!-- Yellow section with logo -->
+    <LogoMovingPart 
+      @update-image-position="updateImagePosition" 
+      :initial-image-position="imagePosition"
+    />
+    
+    <!-- Red section with introduction -->
+    <IntroductionPart 
+      :previous-image-position="previousImagePosition"
+      :current-image-position="imagePosition"
+    />
+    
+    <!-- Green section with fast parallax -->
+    <Element1Part ref="element1Ref" />
+    
+    <!-- Rectangle expansion section -->
+    <Element2Part ref="element2Ref" />
+    
+    <!-- Final transition with image zoom -->
+    <TransitionPart :image-position="imagePosition" ref="transitionRef" />
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, nextTick } from 'vue';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import LogoMovingPart from '@/components/Layout/LogoMovingPart.vue';
+import IntroductionPart from '@/components/Layout/IntroductionPart.vue';
+import Element1Part from '@/components/Layout/Element1Part.vue';
+import Element2Part from '@/components/Layout/Element2Part.vue';
+import TransitionPart from '@/components/Layout/TransitionPart.vue';
+
+// Register ScrollTrigger plugin with GSAP
+gsap.registerPlugin(ScrollTrigger);
+
+// Image position state management
+const imagePosition = ref({ x: 300, y: 400 }); // Default starting position
+const previousImagePosition = ref({ x: 300, y: 400 });
+
+// References to components for direct access
+const element1Ref = ref(null);
+const element2Ref = ref(null);
+const transitionRef = ref(null);
+
+// Function to update image position
+const updateImagePosition = (newPosition) => {
+  previousImagePosition.value = { ...imagePosition.value };
+  imagePosition.value = newPosition;
+};
+
+onMounted(async () => {
+  // Wait for the next DOM update before initializing scroll animations
+  await nextTick();
+  
+  // Set up scroll observers and animations
+  setupScrollAnimations();
+});
+
+const setupScrollAnimations = () => {
+  // Set up IntersectionObserver for each section
+  setupElementObservers();
+  
+  // Set up GSAP ScrollTrigger for continuous animations
+  setupScrollTriggers();
+};
+
+const setupElementObservers = () => {
+  // Create observers for each section to trigger animations on scroll
+  const sections = document.querySelectorAll('.main-page > *');
+  
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.2 // Trigger when 20% of the element is visible
+  };
+  
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Check which section is visible and trigger appropriate animation
+        if (entry.target.classList.contains('element1-part')) {
+          element1Ref.value?.triggerFastScroll();
+        }
+      }
+    });
+  }, observerOptions);
+  
+  sections.forEach(section => {
+    sectionObserver.observe(section);
+  });
+};
+
+const setupScrollTriggers = () => {
+  // Element2Part rectangle expansion
+  if (element2Ref.value) {
+    ScrollTrigger.create({
+      trigger: '.element2-part',
+      start: 'top bottom',
+      end: 'bottom top',
+      onUpdate: (self) => {
+        element2Ref.value.updateScrollProgress(self.progress);
+      }
+    });
+  }
+  
+  // TransitionPart zoom effect
+  if (transitionRef.value) {
+    ScrollTrigger.create({
+      trigger: '.transition-part',
+      start: 'top center',
+      end: 'center center',
+      onUpdate: (self) => {
+        transitionRef.value.updateZoomProgress(self.progress);
+      }
+    });
+  }
+};
 </script>
+
+<style scoped>
+.main-page {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Each section takes full viewport height minimum */
+.main-page > * {
+  min-height: 100vh;
+  width: 100%;
+}
+</style>

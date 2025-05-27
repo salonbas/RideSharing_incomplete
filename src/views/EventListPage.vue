@@ -75,7 +75,6 @@
           <div class="p-1">
             <ProfileBox 
               :user="selectedOrganizer" 
-              :is-self="false"
             />
           </div>
         </div>

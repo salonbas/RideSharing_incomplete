@@ -40,7 +40,15 @@ class User(Base):
             "phone": self.phone,
             "bio": self.bio,
         }
-
+        
+    def to_public_dict(self):
+        return {
+            "nickname": self.nickname or self.username,  # 沒有 nickname 就用 username
+            "avatarUrl": self.avatarUrl,
+            "instagram": self.instagram,
+            "phone": self.phone,
+            "bio": self.bio
+        }
 
 
 class Event(Base):
