@@ -14,22 +14,27 @@
         
         <!-- 中間導航區 -->
         <div class="hidden md:flex space-x-12 items-center">
-          <router-link 
-            to="/" 
-            class="link-btn font-sans text-lg"
-            :class="{ 'text-blue-600 font-medium': isActive('/') }"
-          >
-            首頁
+          <router-link to="/" class="btn group">
+            <span class="btn-text flex items-center">
+              <span class="wave-char">首</span>
+              <span class="wave-char">頁</span>
+            </span>
+            <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+              <rect x="3" y="3" width="94" height="34" rx="17" ry="17" />
+            </svg>
           </router-link>
-          <router-link 
-            to="/events" 
-            class="link-btn font-sans text-lg"
-            :class="{ 'text-blue-600 font-medium': isActive('/events') }"
-          >
-            活動列表
+          <router-link to="/events" class="btn group">
+            <span class="btn-text flex items-center">
+              <span class="wave-char">活</span>
+              <span class="wave-char">動</span>
+              <span class="wave-char">列</span>
+              <span class="wave-char">表</span>
+            </span>
+            <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+              <rect x="3" y="3" width="94" height="34" rx="17" ry="17" />
+            </svg>
           </router-link>
         </div>
-        
         <!-- 右側用戶區 -->
         <div class="flex items-center space-x-4">
           <!-- 通知按鈕 -->
