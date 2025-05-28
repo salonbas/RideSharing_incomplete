@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '@/views/HomePage.vue';
 import EventListPage from '@/views/EventListPage.vue';
+import CreateEventPage from '@/views/CreateEventPage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import ForgotPasswordPage from '@/views/ForgotPasswordPage.vue';
 import NewPasswordPage from '@/views/NewPasswordPage.vue';
@@ -15,6 +16,7 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'home', component: HomePage },
     { path: '/events', name: 'events', component: EventListPage },
+    { path: '/create-event', name: 'createEvent', component: CreateEventPage },
     { path: '/login', name: 'login', component: LoginPage },
     { path: '/forgot-password', name: 'forgotPassword', component: ForgotPasswordPage },
     { path: '/new-password', name: 'newPassword', component: NewPasswordPage },

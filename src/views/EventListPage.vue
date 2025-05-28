@@ -6,18 +6,21 @@
       <!-- 頂部區域：創建活動按鈕 -->
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-4xl font-bold text-[#d1ad41]">活動列表</h1>
-          <button @click="navigateToCreateEvent" class="btn group">
-            <span class="btn-text flex items-center">
-              <span class="wave-char text-2xl mr-1 leading-none">+</span>
-              <span class="wave-char">發</span>
-              <span class="wave-char">起</span>
-              <span class="wave-char">活</span>
-              <span class="wave-char">動</span>
-            </span>
-            <svg viewBox="0 0 100 40" preserveAspectRatio="none">
-              <rect x="3" y="3" width="94" height="34" rx="17" ry="17" />
-            </svg>
-          </button>
+        <router-link
+          :to="{ name: 'createEvent' }"
+          class="btn group"
+        >
+          <span class="btn-text flex items-center">
+            <span class="wave-char text-2xl mr-1 leading-none">+</span>
+            <span class="wave-char">發</span>
+            <span class="wave-char">起</span>
+            <span class="wave-char">活</span>
+            <span class="wave-char">動</span>
+          </span>
+          <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+            <rect x="3" y="3" width="94" height="34" rx="17" ry="17" />
+          </svg>
+        </router-link>
         </div>
         
         <!-- 篩選與排序 -->
