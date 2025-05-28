@@ -36,6 +36,7 @@ flask-cors
 flask-jwt-extended
 sqlalchemy
 python-dotenv
+pip install alembic
 
 如何建立虛擬環境
 # 建立名為 venv 的虛擬環境
@@ -46,6 +47,7 @@ num run dev
 tree /F
 json-server --watch db.json --port 3000
 python controllers/app.py
+alembic init alembic
 
 
 安裝必要套件:
@@ -58,7 +60,7 @@ npm install --save-dev concurrently
 pip install flask flask-cors flask-jwt-extended sqlalchemy python-dotenv
 pip freeze > requirements.txt
 pip install werkzeug
-
+npm install vue-toastification
 
 以下刪掉了(目前):
 npm install @headlessui/vue

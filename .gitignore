@@ -44,3 +44,6 @@ app.db
 # Python virtual environment
 venv/
 .venv/
+
+alembic/
+alembic.ini

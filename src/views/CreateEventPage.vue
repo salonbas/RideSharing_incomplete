@@ -1,0 +1,269 @@
+<template>
+  <div class="min-h-screen flex items-center justify-center bg-black text-[#FFD700]">
+    <div class="w-full max-w-md md:max-w-lg lg:max-w-xl p-8 border rounded-lg shadow-xl bg-black border-gradient max-h-[90vh] overflow-y-auto">
+      <h2 class="text-3xl font-semibold mb-6 text-center font-sans">發起活動</h2>
+      
+      <form @submit.prevent="handleCreateEvent">
+        <!-- 活動標題 -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2 text-left">活動標題</label>
+          <input
+            type="text"
+            v-model="eventData.title"
+            placeholder="請輸入活動標題"
+            class="input"
+            required
+          />
+        </div>
+
+        <!-- 活動描述 -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2 text-left">活動描述</label>
+          <textarea
+            v-model="eventData.description"
+            placeholder="請描述活動內容..."
+            class="input resize-none h-20"
+            required
+          ></textarea>
+        </div>
+
+        <!-- 活動類型 -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2 text-left">活動類型</label>
+          <select v-model="eventData.type" class="input" required>
+            <option value="">請選擇活動類型</option>
+            <option value="共乘">共乘</option>
+            <option value="聚餐">聚餐</option>
+            <option value="旅遊">旅遊</option>
+            <option value="運動">運動</option>
+            <option value="學習">學習</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
+
+        <!-- 活動日期 -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2 text-left">活動日期</label>
+          <input
+            type="date"
+            v-model="eventData.date"
+            class="input"
+            required
+          />
+        </div>
+
+        <!-- 需求人數 -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2 text-left">需求人數</label>
+          <input
+            type="number"
+            v-model="eventData.requiredSeats"
+            placeholder="請輸入需求人數"
+            class="input"
+            min="1"
+            required
+          />
+        </div>
+
+        <!-- 出發地 -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2 text-left">出發地</label>
+          <div class="grid grid-cols-2 gap-2">
+            <input
+              type="text"
+              v-model="eventData.fromCity"
+              placeholder="城市"
+              class="input"
+            />
+            <input
+              type="text"
+              v-model="eventData.fromDetail"
+              placeholder="詳細地點"
+              class="input"
+            />
+          </div>
+        </div>
+
+        <!-- 目的地 -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2 text-left">目的地</label>
+          <div class="grid grid-cols-2 gap-2">
+            <input
+              type="text"
+              v-model="eventData.toCity"
+              placeholder="城市"
+              class="input"
+            />
+            <input
+              type="text"
+              v-model="eventData.toDetail"
+              placeholder="詳細地點"
+              class="input"
+            />
+          </div>
+        </div>
+
+        <!-- 聯絡方式 -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium mb-2 text-left">希望的聯絡方式</label>
+          <select v-model="eventData.contactMethod" class="input" required>
+            <option value="">請選擇聯絡方式</option>
+            <option value="line">LINE</option>
+            <option value="instagram">Instagram</option>
+            <option value="phone">電話</option>
+            <option value="email">Email</option>
+          </select>
+        </div>
+
+        <!-- 按鈕區域 -->
+        <div class="flex gap-4">
+          <button 
+            type="button" 
+            @click="handleCancel"
+            class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded transition font-semibold"
+          >
+            取消
+          </button>
+          <button 
+            type="submit" 
+            class="btn flex-1"
+          >
+            發起活動
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
+
+const router = useRouter()
+
+const eventData = reactive({
+  title: '',
+  description: '',
+  type: '',
+  date: '',
+  requiredSeats: 1,
+  fromCity: '',
+  fromDetail: '',
+  toCity: '',
+  toDetail: '',
+  contactMethod: ''
+})
+
+const handleCancel = () => {
+  // 返回上一頁或首頁
+  router.go(-1)
+}
+
+const resetForm = () => {
+  eventData.title = ''
+  eventData.description = ''
+  eventData.type = ''
+  eventData.date = ''
+  eventData.requiredSeats = 1
+  eventData.fromCity = ''
+  eventData.fromDetail = ''
+  eventData.toCity = ''
+  eventData.toDetail = ''
+  eventData.contactMethod = ''
+}
+
+const handleCreateEvent = async () => {
+  if (!eventData.title || !eventData.description || !eventData.type || 
+      !eventData.date || !eventData.requiredSeats || !eventData.contactMethod) {
+    alert('請填寫所有必填欄位')
+    return
+  }
+
+  const token = localStorage.getItem('token')  // 假設你登入後有存 token
+
+  try {
+    const response = await axios.post('http://localhost:5000/events/create', eventData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    console.log("SUCCESS: Created event:", response.data)
+    alert("活動創建成功！")
+
+    resetForm()
+    router.push({ name: 'events' })
+
+  } catch (error) {
+    console.error("ERROR: Failed to create event", error)
+    alert("活動創建失敗，請稍後再試")
+  }
+}
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+.input {
+  @apply w-full px-4 py-2 border rounded;
+  background-color: transparent;
+  color: #FFD700;
+  border-image: linear-gradient(to right, #fff, #FFD700) 1;
+  font-family: 'Inter', sans-serif;
+}
+
+.input::placeholder {
+  color: #FFD700aa;
+}
+
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+}
+
+/* 修正 select 和 textarea 的樣式 */
+select.input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23FFD700' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+}
+
+select.input option {
+  background-color: #000;
+  color: #FFD700;
+}
+
+textarea.input {
+  resize: vertical;
+  min-height: 5rem;
+}
+
+.btn {
+  @apply font-semibold py-2 px-4 rounded transition;
+  background: linear-gradient(to right, #FFD700, #fff);
+  color: #000;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+h2 {
+  font-family: 'Inter', sans-serif;
+}
+
+.border-gradient {
+  border-width: 1px;
+  border-image: linear-gradient(to right, #ffffff80, #FFD700) 1;
+}
+
+label {
+  font-family: 'Inter', sans-serif;
+}
+</style>

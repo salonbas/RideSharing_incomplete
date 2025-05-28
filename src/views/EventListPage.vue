@@ -6,15 +6,15 @@
       <!-- 頂部區域：創建活動按鈕 -->
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-4xl font-bold text-[#d1ad41]">活動列表</h1>
-          <button 
-            @click="navigateToCreateEvent" 
+          <router-link
+            :to="{ name: 'createEvent' }"
             class="bg-[#d1ad41] hover:bg-[#a08432e7] text-[#1c1e10] px-6 py-3 rounded-md transition duration-200 flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
             發起活動
-          </button>
+          </router-link>
         </div>
         
         <!-- 篩選與排序 -->

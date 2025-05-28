@@ -4,3 +4,4 @@ flask-jwt-extended
 sqlalchemy
 python-dotenv
 werkzeug
+alembic

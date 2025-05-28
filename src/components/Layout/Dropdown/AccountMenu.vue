@@ -1,7 +1,7 @@
 <template>
   <div class="relative" ref="menuRef">
     <img
-      :src="user.avatarUrl"
+      :src="user?.avatarUrl || '/default-avatar.png'"
       alt="User Avatar"
       class="w-10 h-10 rounded-full border-2 border-blue-500 cursor-pointer hover:ring-2 hover:ring-blue-300 transition"
       @click="toggleMenu"
@@ -52,6 +52,7 @@ import { useAuthStore } from '@/stores/authStore'
 const router = useRouter()
 const auth = useAuthStore()
 
+const user = ref(null)
 const showMenu = ref(false)
 const menuRef = ref(null)
 
@@ -84,9 +85,13 @@ onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
 })
 
-// 模擬用戶資料（可替換為 store 傳入）
-const user = {
-  name: '阿明',
-  avatarUrl: '/user-avatar.png'
-}
+onMounted(async () => {
+  try {
+    const data = await auth.getProfile()
+    user.value = data
+  } catch (err) {
+    console.error('無法取得使用者資料:', err)
+  }
+})
+
 </script>
