@@ -115,6 +115,15 @@ def join_or_cancel_event():
         return jsonify(result), 400
     return jsonify(result)
 
+@app.get("/events/myevents")
+@jwt_required()
+def get_my_events():
+    user_id = get_jwt_identity()
+    result = event_service.get_user_events(user_id)
+    if "error" in result:
+        return jsonify(result), 404
+    return jsonify(result)
+
 @app.post("/register")
 def register():
     data = request.get_json()

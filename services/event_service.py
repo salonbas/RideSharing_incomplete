@@ -6,7 +6,7 @@ from config.db import get_session
 def fetch_events():
     return get_all_events()
 
-def create_new_event(user_id, event_data):  # 新增這個方法
+def create_new_event(user_id, event_data):  
     print("DEBUG: create_new_event called")
     print("DATA: user_id =", user_id)
     print("DATA: event_data =", event_data)
@@ -37,3 +37,14 @@ def join_or_cancel(user_id, data):
         return {"error": "未知的 action"}
     update_event(event)
     return {"msg": f"{action} 成功"}
+
+def get_user_events(user_id):
+    session = get_session()
+    user = find_by_id(session, user_id)
+    if not user:
+        return {"error": "找不到使用者"}
+
+    return {
+        "organized": [e.to_dict() for e in user.events],
+        "joined": [e.to_dict() for e in user.joined_events]
+    }
