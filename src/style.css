@@ -168,7 +168,6 @@ button:focus-visible {
 .group:hover .wave-char:nth-child(3) { animation-delay: 0.1s; }
 .group:hover .wave-char:nth-child(4) { animation-delay: 0.15s; }
 .group:hover .wave-char:nth-child(5) { animation-delay: 0.2s; }
-
 .card-wrapper {
   perspective: 1000px;
   width: 100%;

@@ -99,10 +99,10 @@ const videoDataList = [
     />
     
     <!-- Green section with fast parallax -->
-    <Element1Part ref="element1Ref" />
+    <!-- <Element1Part ref="element1Ref" /> -->
     
     <!-- Rectangle expansion section -->
-    <Element2Part ref="element2Ref" />
+    <!-- <Element2Part ref="element2Ref" /> -->
     
     <!-- Final transition with image zoom -->
     <TransitionPart :image-position="imagePosition" ref="transitionRef" />
