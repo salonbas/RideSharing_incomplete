@@ -37,7 +37,6 @@ export function handleApiError(err, { toast = null, autoLogout = true, redirect 
   console.error('❌ 錯誤細節:', err)
 }
 
-
 export const useAuthStore = defineStore('auth', () => {
   const isLoggedIn = ref(false)
   const user = ref(null)
@@ -109,7 +108,6 @@ export const useAuthStore = defineStore('auth', () => {
     } catch (err) {
       console.error('取得使用者資料失敗:', err)
       handleApiError(err)
-      // 如果是 401 錯誤，自動登出
       if (err.response?.status === 401) {
         logout()
       }
@@ -127,7 +125,6 @@ export const useAuthStore = defineStore('auth', () => {
           'Content-Type': 'application/json',
         },
       })
-      // 更新本地使用者資料
       if (res.data.user) {
         user.value = res.data.user
         localStorage.setItem('user', JSON.stringify(res.data.user))
@@ -157,7 +154,6 @@ export const useAuthStore = defineStore('auth', () => {
         },
       })
       
-      // 更新本地使用者頭像資料
       if (res.data.avatarUrl && user.value) {
         user.value.avatarUrl = res.data.avatarUrl
         localStorage.setItem('user', JSON.stringify(user.value))
@@ -186,13 +182,53 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // 取得所有活動
+  async function getAllEvents() {
+    try {
+      const res = await axios.get(`${API_URL}/events`)
+      return res.data
+    } catch (err) {
+      console.error('❌ 無法取得活動資料:', err)
+      handleApiError(err)
+      throw err
+    }
+  }
+
+  // 取得自己參加或主辦的活動
+  async function getMyEvents() {
+    if (!token.value) throw new Error('未登入')
+    try {
+      const res = await axios.get(`${API_URL}/events/myevents`, {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      return res.data
+    } catch (err) {
+      console.error('取得自己活動失敗:', err)
+      handleApiError(err)
+      if (err.response?.status === 401) {
+        logout()
+      }
+      throw err
+    }
+  }
+
+  // 加入活動
   async function joinEvent(eventId) {
     console.log("準備加入活動，Token:", token.value)
+    if (!isLoggedIn.value) {
+      throw new Error('請先登入再申請加入活動')
+    }
+
     try {
+      const formattedEventId = typeof eventId === 'string' ? parseInt(eventId, 10) : eventId
+      
       const res = await axios.post(
-        `${API_URL}/events/join`,
+        `${API_URL}/events/action`,
         {
-          event_id: String(eventId),
+          event_id: formattedEventId,
           action: 'join',
         },
         {
@@ -202,29 +238,32 @@ export const useAuthStore = defineStore('auth', () => {
           },
         }
       )
+      console.log('加入成功:', res.data)
       return res.data
     } catch (err) {
       console.error('加入活動錯誤:', err)
-      if (err.response) {
-        console.error(" 錯誤狀態碼:", err.response.status)
-        console.error(" 錯誤內容:", err.response.data)
-      }
-      handleApiError(err)
       if (err.response?.status === 401) {
         logout()
       }
+      handleApiError(err)
       throw err
     }
   }
 
   // 取消參加活動
-  async function cancelEvent(eventId) {
-    if (!token.value) throw new Error('未登入')
+  async function leaveEvent(eventId) {
+    console.log("退出活動", eventId)
+    if (!isLoggedIn.value) {
+      throw new Error('請先登入')
+    }
+
     try {
+      const formattedEventId = typeof eventId === 'string' ? parseInt(eventId, 10) : eventId
+
       const res = await axios.post(
-        `${API_URL}/events/join`,
+        `${API_URL}/events/action`,
         {
-          event_id: String(eventId),
+          event_id: formattedEventId,
           action: 'cancel',
         },
         {
@@ -234,13 +273,48 @@ export const useAuthStore = defineStore('auth', () => {
           },
         }
       )
+      console.log('退出成功:', res.data)
       return res.data
     } catch (err) {
-      console.error('取消活動錯誤:', err)
-      handleApiError(err)
+      console.error('退出活動錯誤:', err)
       if (err.response?.status === 401) {
         logout()
       }
+      handleApiError(err)
+      throw err
+    }
+  }
+
+  async function cancelEvent(eventId) {
+    console.log("取消活動", eventId)
+    if (!isLoggedIn.value) {
+      throw new Error('請先登入')
+    }
+
+    try {
+      const formattedEventId = typeof eventId === 'string' ? parseInt(eventId, 10) : eventId
+
+      const res = await axios.post(
+        `${API_URL}/events/action`,
+        {
+          event_id: formattedEventId,
+          action: 'delete',
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token.value}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      console.log('取消活動成功:', res.data)
+      return res.data
+    } catch (err) {
+      console.error('取消活動錯誤:', err)
+      if (err.response?.status === 401) {
+        logout()
+      }
+      handleApiError(err)
       throw err
     }
   }
@@ -279,7 +353,10 @@ export const useAuthStore = defineStore('auth', () => {
     updateProfile,
     updateAvatar,
     getPublicUser,
+    getAllEvents,
+    getMyEvents,
     joinEvent,
+    leaveEvent,
     cancelEvent,
     createEvent,
   }

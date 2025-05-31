@@ -3,6 +3,7 @@
 import os
 import sys
 import re
+import traceback
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -18,7 +19,12 @@ print("目前載入的 event_service 是：", services.event_service.__file__)
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
+CORS(app, 
+     origins=["http://localhost:5173", "http://127.0.0.1:5173"],  # 你的前端 URL
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # 允許的 HTTP 方法
+     allow_headers=["Content-Type", "Authorization"],  # 允許的請求頭
+     supports_credentials=True  # 支援 cookies 和認證資訊
+)
 jwt = JWTManager(app)
 
 # === 登入 ===
@@ -30,6 +36,8 @@ def login():
     user = auth_service.login_user(username, password)
 
     if not user:
+        print("login failed")
+        traceback.print_exc()
         return jsonify({"msg": "登入失敗"}), 401
 
     token = create_access_token(identity=str(user.id))
@@ -104,15 +112,49 @@ def create_event():
         return jsonify(result), 400
     return jsonify(result), 201
 
-# === 加入或取消活動 ===
-@app.post("/events/join")
+# === 加入,取消,活動 ===
+@app.post("/events/action")
 @jwt_required()
-def join_or_cancel_event():
-    user_id = get_jwt_identity()
+def handle_event_action():
+    user_id = int(get_jwt_identity())
     data = request.get_json()
-    result = event_service.join_or_cancel(user_id, data)
+    result = event_service.handle_event_action(user_id, data)
     if "error" in result:
         return jsonify(result), 400
+    return jsonify(result)
+    
+# 新增：獲取用戶參加的活動列表
+@app.get("/events/joined")
+@jwt_required()
+def get_joined_events():
+    user_id = int(get_jwt_identity())
+    result = event_service.get_user_joined_events(user_id)
+    if "error" in result:
+        return jsonify(result), 500
+    return jsonify(result)
+
+# 新增：獲取活動詳情包含參與狀態
+@app.get("/events/<int:event_id>")
+@jwt_required(optional=True)
+def get_event_detail(event_id):
+    user_id = get_jwt_identity()
+    result = event_service.get_event_with_participation(event_id, user_id)
+    if "error" in result:
+        return jsonify(result), 404
+    return jsonify(result)
+
+@app.get("/events/myevents")
+@jwt_required()
+def get_my_events():
+    user_id = get_jwt_identity()
+    print(f" get_my_events called for user_id: {user_id}")
+    
+    result = event_service.get_user_events(user_id)
+    if "error" in result:
+        print(f" get_my_events error: {result}")
+        return jsonify(result), 404
+    
+    print(f" get_my_events success: organized={len(result.get('organized', []))}, joined={len(result.get('joined', []))}")
     return jsonify(result)
 
 @app.post("/register")

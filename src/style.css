@@ -1,3 +1,4 @@
+/*style.css*/
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap');
 
 @tailwind base;
@@ -64,10 +65,6 @@ button:focus,
 button:focus-visible {
   outline: none;
   box-shadow: none;
-}
-
-.card {
-  padding: 2em;
 }
 
 #app {
@@ -165,7 +162,7 @@ button:focus-visible {
   animation: waveFloat 0.6s ease forwards;
 }
 
-/* ✅ 每個字延遲一點點出發 */
+/*  每個字延遲一點點出發 */
 .group:hover .wave-char:nth-child(1) { animation-delay: 0s;}
 .group:hover .wave-char:nth-child(2) { animation-delay: 0.05s; }
 .group:hover .wave-char:nth-child(3) { animation-delay: 0.1s; }
@@ -174,7 +171,7 @@ button:focus-visible {
 .card-wrapper {
   perspective: 1000px;
   width: 100%;
-  aspect-ratio: 4 / 4; /* ⭐ 保持卡片正方形比例，避免高度不一致 */
+  aspect-ratio: 4 / 4; /*  保持卡片正方形比例，避免高度不一致 */
   position: relative;
 }
 

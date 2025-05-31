@@ -32,12 +32,10 @@
           <label class="block text-sm font-medium mb-2 text-left">活動類型</label>
           <select v-model="eventData.type" class="input" required>
             <option value="">請選擇活動類型</option>
-            <option value="共乘">共乘</option>
-            <option value="聚餐">聚餐</option>
-            <option value="旅遊">旅遊</option>
-            <option value="運動">運動</option>
-            <option value="學習">學習</option>
-            <option value="其他">其他</option>
+            <option value="carpool">共乘</option>
+            <option value="party">喝酒</option>
+            <option value="sex">Netfilx and cill</option>
+            <option value="else">其他</option>
           </select>
         </div>
 
@@ -65,41 +63,50 @@
           />
         </div>
 
-        <!-- 出發地 -->
+        <!-- 地點選擇區域 -->
         <div class="mb-4">
-          <label class="block text-sm font-medium mb-2 text-left">出發地</label>
-          <div class="grid grid-cols-2 gap-2">
-            <input
-              type="text"
-              v-model="eventData.fromCity"
-              placeholder="城市"
-              class="input"
-            />
-            <input
-              type="text"
-              v-model="eventData.fromDetail"
-              placeholder="詳細地點"
-              class="input"
-            />
-          </div>
-        </div>
+          <div class="grid grid-cols-2 gap-4">
+            <!-- 出發地區域 -->
+            <div>
+              <label class="block text-sm font-medium mb-2 text-left">出發地</label>
+              <!-- 出發地台灣地圖 -->
+              <div class="mb-2">
+                <BottonSvg @select="handleFromCitySelect" />
+              </div>
+              <input
+                type="text"
+                v-model="eventData.fromCity"
+                placeholder="城市"
+                class="input mb-2"
+              />
+              <input
+                type="text"
+                v-model="eventData.fromDetail"
+                placeholder="詳細地點"
+                class="input"
+              />
+            </div>
 
-        <!-- 目的地 -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-2 text-left">目的地</label>
-          <div class="grid grid-cols-2 gap-2">
-            <input
-              type="text"
-              v-model="eventData.toCity"
-              placeholder="城市"
-              class="input"
-            />
-            <input
-              type="text"
-              v-model="eventData.toDetail"
-              placeholder="詳細地點"
-              class="input"
-            />
+            <!-- 目的地區域 -->
+            <div>
+              <label class="block text-sm font-medium mb-2 text-left">目的地</label>
+              <!-- 目的地台灣地圖 -->
+              <div class="mb-2">
+                <BottonSvg @select="handleToCitySelect" />
+              </div>
+              <input
+                type="text"
+                v-model="eventData.toCity"
+                placeholder="城市"
+                class="input mb-2"
+              />
+              <input
+                type="text"
+                v-model="eventData.toDetail"
+                placeholder="詳細地點"
+                class="input"
+              />
+            </div>
           </div>
         </div>
 
@@ -139,6 +146,7 @@
 <script setup>
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import BottonSvg from '@/components/Event/BottonSvg.vue'
 import axios from 'axios'
 
 const router = useRouter()
@@ -155,6 +163,14 @@ const eventData = reactive({
   toDetail: '',
   contactMethod: ''
 })
+
+const handleFromCitySelect = (cityName) => {
+  eventData.fromCity = cityName
+}
+
+const handleToCitySelect = (cityName) => {
+  eventData.toCity = cityName
+}
 
 const handleCancel = () => {
   // 返回上一頁或首頁

@@ -2,17 +2,26 @@
 # 以下為你應建立的目錄與檔案，含初始程式碼結構與註解：
 
 # models/models.py
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Table
+from datetime import datetime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Table, UniqueConstraint
 from sqlalchemy.orm import declarative_base, relationship
+
 
 Base = declarative_base()
 
-user_event_association = Table(
-    "user_event_association",
-    Base.metadata,
-    Column("user_id", Integer, ForeignKey("users.id"), primary_key=True),
-    Column("event_id", Integer, ForeignKey("events.id"), primary_key=True)
-)
+class EventParticipant(Base):
+    __tablename__ = "event_participants"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    event_id = Column(Integer, ForeignKey("events.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    joined_at = Column(DateTime, default=datetime.utcnow)
+    
+    # 確保同一個用戶不能重複參加同一個活動
+    __table_args__ = (UniqueConstraint('event_id', 'user_id'),)
+    
+    event = relationship("Event", back_populates="participants")
+    user = relationship("User", back_populates="joined_events")
 
 class User(Base):
     __tablename__ = "users"
@@ -27,7 +36,7 @@ class User(Base):
     bio = Column(String)
 
     events = relationship("Event", back_populates="organizer")
-    joined_events = relationship("Event", secondary=user_event_association, back_populates="participants")
+    joined_events = relationship("EventParticipant", back_populates="user")
 
     def to_dict(self):
         return {
@@ -65,10 +74,11 @@ class Event(Base):
     from_detail = Column(String)
     to_city = Column(String)
     to_detail = Column(String)
-    contact_method = Column(String)  # 新增這行
+    contact_method = Column(String)  
+    price = Column(Integer, default=0)
 
     organizer = relationship("User", back_populates="events")
-    participants = relationship("User", secondary=user_event_association, back_populates="joined_events")
+    participants = relationship("EventParticipant", back_populates="event")
 
     def to_dict(self):
         return {
@@ -80,7 +90,8 @@ class Event(Base):
             "requiredSeats": self.requiredSeats,
             "joinedSeats": self.joinedSeats,
             "spotsRemaining": self.requiredSeats - self.joinedSeats,
-            "contactMethod": self.contact_method,  # 新增這行
+            "contactMethod": self.contact_method,  
+            "price": self.price,
             "organizer": {
                 "id": self.organizer.id,
                 "nickname": self.organizer.nickname,

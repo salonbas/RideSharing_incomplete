@@ -20,7 +20,7 @@
           <router-link to="/forgot-password" class="text-sm text-blue-600 hover:underline block mt-3 text-center">
             忘記密碼？
           </router-link>
-          <router-link to="/create-password" class="text-sm text-blue-600 hover:underline block mt-3 text-center">
+          <router-link to="/create-account" class="text-sm text-blue-600 hover:underline block mt-3 text-center">
            創建帳號
           </router-link>
         </form>
