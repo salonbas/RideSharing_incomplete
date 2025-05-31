@@ -1,6 +1,4 @@
-# === 專案初始化：三層式分層架構啟動 ===
-# 此檔案為 init_db.py，用於初次從 db.json 初始化 app.db
-
+# init_db.py
 import json
 from datetime import datetime
 from sqlalchemy import create_engine
@@ -53,11 +51,12 @@ for e in data["events"]:
         from_detail=e.get("location", {}).get("from", {}).get("detail", ""),
         to_city=e.get("location", {}).get("destination", {}).get("city", ""),
         to_detail=e.get("location", {}).get("destination", {}).get("detail", ""),
-        contact_method=e.get("contactMethod", "line")  # 新增這行，預設為 line
+        contact_method=e.get("contactMethod", "line"),
+        price=e.get("price", 0)  # 加入新的 price 欄位
     )
     session.add(event)
 
 # 提交變更
 session.commit()
-print("✅ 資料庫初始化完成")
+print(" 資料庫初始化完成")
 session.close()

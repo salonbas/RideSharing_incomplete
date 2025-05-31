@@ -6,10 +6,17 @@
       <!-- 頂部區域：創建活動按鈕 -->
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-4xl font-bold text-[#d1ad41]">活動列表</h1>
-        <router-link
-          :to="{ name: 'createEvent' }"
-          class="btn group"
-        >
+          <EventFilterSort
+            :initialSort="currentSort"
+            :initialFilters="currentFilters"
+            @sort-change="handleSortChange"
+            @filter-change="handleFilterChange"
+            @expand-toggle="handleExpandToggle"
+          />
+          <router-link
+            :to="{ name: 'createEvent' }"
+            class="btn group"
+          >
           <span class="btn-text flex items-center">
             <span class="wave-char text-2xl mr-1 leading-none">+</span>
             <span class="wave-char">發</span>
@@ -22,13 +29,7 @@
           </svg>
         </router-link>
         </div>
-        
-        <!-- 篩選與排序 -->
-        <!-- <EventFilterSort 
-          @sort-change="handleSortChange" 
-          @filter-change="handleFilterChange" 
-        /> -->
-        
+
         <!-- 活動列表 -->
         <div v-if="loading" class="text-center py-12">
           <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-[#d1ad41] mx-auto"></div>
@@ -42,27 +43,95 @@
           <p class="mt-4 text-lg text-[#d1ad41]">沒有找到符合條件的活動</p>
         </div>
         
-        <div v-else class="min-h-[75vh] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-fr gap-8 mt-6">
-          <EventCard 
-            v-for="event in eventsToDisplay" 
-            :key="event.id" 
-            :event-data="event"
-            @show-profile="showProfile"
-            @join-event="handleJoinEvent"
-          />
+        <!-- 活動卡片 + 分頁按鈕區塊 -->
+        <div v-else class="grid grid-cols-[1fr_auto] gap-4 mt-6">
+          <!-- 左：卡片 -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-fr gap-8">
+            <EventCard 
+              v-for="event in eventsToDisplay" 
+              :key="event.id" 
+              :event-data="event"
+              :currentUserId="currentUserId"
+              :joinedEventIds="joinedEventIds"
+              :play-animation="playAnim" 
+              @show-detail="openEventDetail"
+              @show-profile="showProfile"
+              @join-event="handleJoinEvent"
+              @leave-event="handleLeaveEvent"
+              @cancel-event="handleCancelEvent"
+            />
+          </div>
+
+          <!-- 右：上下頁按鈕 -->
+          <div class="flex flex-col justify-center items-center space-y-8 relative">
+            <!-- 下一頁 group -->
+            <div class="relative group">
+              <div
+                @click="handlePageChange(currentPage + 1)"
+                :class="{ 'opacity-30 pointer-events-none': currentPage === totalPages }"
+                class="cursor-pointer transition-transform duration-200 ease-out hover:scale-110 hover:translate-x-1 hover:drop-shadow-[0_0_6px_#d1ad41]"
+                style="
+                  width: 0;
+                  height: 0;
+                  border-top: 24px solid transparent;
+                  border-bottom: 24px solid transparent;
+                  border-left: 28px solid white;
+                "
+              ></div>
+
+              <div
+                class="absolute top-[-550%] right-[15%] w-6 h-6 bg-[#d1ad41] rounded-full opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-2"
+              ></div>
+            </div>
+
+            <!-- 上一頁 group -->
+            <div class="relative group">
+              <div
+                @click="handlePageChange(currentPage - 1)"
+                :class="{ 'opacity-30 pointer-events-none': currentPage === 1 }"
+                class="cursor-pointer transition-transform duration-200 ease-out hover:scale-110 hover:-translate-x-1 hover:drop-shadow-[0_0_6px_#d1ad41]"
+                style="
+                  width: 0;
+                  height: 0;
+                  border-top: 24px solid transparent;
+                  border-bottom: 24px solid transparent;
+                  border-right: 28px solid white;
+                "
+              ></div>
+
+              <div
+                class="absolute bottom-[-550%] left-[-4800%] w-6 h-6 bg-[#d1ad41] rounded-full opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-2"
+              ></div>
+            </div>
+          </div>
         </div>
-        
-        <!-- 分頁 -->
-        <div class="fixed top-1/2 right-4 -translate-y-1/2 z-50 flex flex-col items-center space-y-2">
-          <PaginationBar 
-            v-if="filteredEvents.length > 0"
-            :total-pages="totalPages" 
-            :current-page="currentPage" 
-            @page-change="handlePageChange" 
+      </div>
+      <!-- 活動詳情彈窗 -->
+      <div 
+        v-if="selectedEvent" 
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        @click.self="selectedEvent = null"
+      >
+        <div class="relative max-w-2xl w-full mx-4">
+          <button 
+            @click="selectedEvent = null" 
+            class="absolute top-4 right-4 z-10 text-white hover:text-gray-300 bg-black bg-opacity-50 rounded-full p-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <EventDetail 
+            :eventData="selectedEvent"
+            :currentUserId="currentUserId"
+            :joinedEventIds="joinedEventIds"
+            @join-event="handleJoinEvent"
+            @leave-event="handleLeaveEvent"
+            @cancel-event="handleCancelEvent"
+            @show-profile="showProfile"
           />
         </div>
       </div>
-      
       <!-- 個人資料浮動視窗 -->
       <div 
         v-if="showProfileBox" 
@@ -88,17 +157,36 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
-import axios from 'axios'
-import NavBar from '../components/Layout/Navbar.vue'
+import { useEventService } from '@/composables/useEvents'
 import EventCard from '../components/Event/EventCard.vue'
+import EventDetail from '../components/Event/EventDetail.vue'
 import EventFilterSort from '../components/Event/EventFilterSort.vue'
 import PaginationBar from '../components/Event/PaginationBar.vue'
 import ProfileBox from '../components/Profile/ProfileBox.vue'
+
+const eventService = useEventService()
+
+const {
+  joinedEventIds,
+  initJoinedEvents,
+  joinEvent,
+  leaveEvent,
+  cancelEvent,
+  createEvent,
+  getAllEvents,
+  hasJoinedEvent
+} = eventService
+
+
+const playAnim = ref(false)
+
+const auth = useAuthStore()
+const currentUserId = auth.user?.id || 0
+const selectedEvent = ref(null)
 
 // 路由相關
 const router = useRouter();
@@ -107,8 +195,6 @@ const route = useRoute();
 // 頁面狀態
 const loading = ref(true);
 const events = ref([]);
-const sortBy = ref('date-asc');
-const filterType = ref('all');
 const currentPage = ref(1);
 const itemsPerPage = 8;
 
@@ -116,42 +202,72 @@ const itemsPerPage = 8;
 const showProfileBox = ref(false);
 const selectedOrganizer = ref(null);
 
+// 排序和篩選狀態
+const currentSort = ref('spotsRemaining-desc');
+const currentFilters = ref({
+  hasAvailableSpots: false,
+  withinWeek: false,
+  withinMonth: false,
+  cities: []
+});
+
+// 展開狀態（用於頁面效果）
+const isFilterExpanded = ref(false);
+
 // 從路由參數中獲取頁碼和篩選條件（如果有）
 onMounted(() => {
   if (route.query.page) {
     currentPage.value = parseInt(route.query.page) || 1;
   }
   
-  if (route.query.type) {
-    filterType.value = route.query.type;
+  // 從路由恢復排序設定
+  if (route.query.sort) {
+    currentSort.value = route.query.sort;
   }
   
-  if (route.query.sort) {
-    sortBy.value = route.query.sort;
+  // 從路由恢復篩選條件
+  if (route.query.filters) {
+    try {
+      const parsedFilters = JSON.parse(decodeURIComponent(route.query.filters));
+      currentFilters.value = { ...currentFilters.value, ...parsedFilters };
+    } catch (e) {
+      console.warn('無法解析篩選參數:', e);
+    }
   }
   
   fetchEvents();
+  fetchMyEvents();
 });
 
-// 監聽過濾條件的變化，重置頁碼
-watch([sortBy, filterType], () => {
+// 監聽排序和篩選條件的變化，重置頁碼
+watch([currentSort, currentFilters], () => {
   currentPage.value = 1;
   updateUrlParams();
-});
+}, { deep: true });
 
 // 處理排序變更
-const handleSortChange = (sort) => {
-  sortBy.value = sort;
+const handleSortChange = (sortValue) => {
+  currentSort.value = sortValue;
 };
 
 // 處理篩選變更
-const handleFilterChange = (filter) => {
-  filterType.value = filter;
+const handleFilterChange = (filters) => {
+  currentFilters.value = { ...filters };
+};
+
+// 處理展開狀態變更
+const handleExpandToggle = (isExpanded) => {
+  isFilterExpanded.value = isExpanded;
+  // 可以在這裡添加頁面背景模糊等效果
 };
 
 // 處理分頁變更
 const handlePageChange = (page) => {
+  playAnim.value = true
   currentPage.value = page;
+  setTimeout(() => {
+    playAnim.value = false  // 1秒後自動關閉，方便下次重播
+  }, 2000)
   updateUrlParams();
   // 滾動到頂部
   window.scrollTo({
@@ -162,8 +278,8 @@ const handlePageChange = (page) => {
 
 const showProfile = async (userId) => {
   try {
-    const res = await axios.get(`http://localhost:5000/users/${userId}`)
-    selectedOrganizer.value = res.data
+    const userData = await auth.getPublicUser(userId)
+    selectedOrganizer.value = userData
     showProfileBox.value = true
   } catch (err) {
     console.error('載入 organizer 資料失敗:', err)
@@ -171,85 +287,178 @@ const showProfile = async (userId) => {
   }
 }
 
+const openEventDetail = (eventId) => {
+  selectedEvent.value = events.value.find(e => e.id === eventId)
+}
+
 // 處理加入活動
-const auth = useAuthStore()
 const handleJoinEvent = async (eventId) => {
-  console.log("申請加入活動", eventId)
-  console.log("token:", auth.token)
-
-  if (!auth.isLoggedIn) {
-    alert('請先登入再申請加入活動')
-    return
-  }
-
   try {
-    const formattedEventId = typeof eventId === 'string' ? parseInt(eventId, 10) : eventId
-
-    const response = await auth.joinEvent(formattedEventId)
-
-    console.log('加入成功:', response)
+    await eventService.joinEvent(eventId)
     alert('成功申請加入活動')
-
-    // 重新取得活動資料（你需自行實作 fetchEvents()）
-    await fetchEvents?.()
+    
+    // 重新載入資料
+    await fetchEvents()
+    await fetchMyEvents()
+    
+    // 如果詳情頁面開啟，更新詳情頁面的資料
+    if (selectedEvent.value && selectedEvent.value.id === eventId) {
+      selectedEvent.value = events.value.find(e => e.id === eventId)
+    }
   } catch (err) {
-    console.error('加入活動錯誤:', err)
-
-    const msg =
-      err?.response?.data?.error ||
-      err?.response?.data?.msg ||
-      err.message ||
-      '未知錯誤'
-
+    const msg = err?.response?.data?.error || err?.response?.data?.msg || err.message || '未知錯誤'
     alert(`申請失敗：${msg}`)
   }
 }
 
-// 導航到創建活動頁面
-const navigateToCreateEvent = () => {
-  router.push('/event/create');
-};
+// 處理退出活動
+const handleLeaveEvent = async (eventId) => {
+  try {
+    await eventService.leaveEvent(eventId)
+    alert('成功退出活動')
+    
+    // 重新載入資料
+    await fetchEvents()
+    await fetchMyEvents()
+    
+    // 如果詳情頁面開啟，更新詳情頁面的資料
+    if (selectedEvent.value && selectedEvent.value.id === eventId) {
+      selectedEvent.value = events.value.find(e => e.id === eventId)
+    }
+  } catch (err) {
+    const msg = err?.response?.data?.error || err?.response?.data?.msg || err.message || '未知錯誤'
+    alert(`退出失敗：${msg}`)
+  }
+}
+
+// 處理取消活動
+const handleCancelEvent = async (eventId) => {
+  if (!confirm('確定要取消這個活動嗎？此操作無法復原。')) {
+    return
+  }
+
+  try {
+    await eventService.cancelEvent(eventId)
+    alert('活動已成功取消')
+    
+    // 重新載入資料
+    await fetchEvents()
+    await fetchMyEvents()
+    
+    // 如果詳情頁面開啟且是被取消的活動，關閉詳情頁面
+    if (selectedEvent.value && selectedEvent.value.id === eventId) {
+      selectedEvent.value = null
+    }
+  } catch (err) {
+    const msg = err?.response?.data?.error || err?.response?.data?.msg || err.message || '未知錯誤'
+    alert(`取消失敗：${msg}`)
+  }
+}
 
 // 更新 URL 參數
 const updateUrlParams = () => {
-  router.replace({
-    query: {
-      page: currentPage.value,
-      type: filterType.value !== 'all' ? filterType.value : undefined,
-      sort: sortBy.value !== 'date-asc' ? sortBy.value : undefined
-    }
-  });
+  const query = {
+    page: currentPage.value > 1 ? currentPage.value : undefined,
+    sort: currentSort.value !== 'spotsRemaining-desc' ? currentSort.value : undefined
+  };
+
+  // 如果有篩選條件，將其序列化到 URL 中
+  const hasFilters = currentFilters.value.hasAvailableSpots || 
+                    currentFilters.value.withinWeek || 
+                    currentFilters.value.withinMonth || 
+                    currentFilters.value.cities.length > 0;
+  
+  if (hasFilters) {
+    query.filters = encodeURIComponent(JSON.stringify(currentFilters.value));
+  }
+
+  router.replace({ query });
+};
+
+// 獲取日期範圍的輔助函數
+const getDateRange = (type) => {
+  const now = new Date();
+  const endDate = new Date(now);
+  
+  if (type === 'week') {
+    endDate.setDate(now.getDate() + 7);
+  } else if (type === 'month') {
+    endDate.setMonth(now.getMonth() + 1);
+  }
+  
+  return { start: now, end: endDate };
+};
+
+// 檢查城市是否匹配
+const checkCityMatch = (event, selectedCities) => {
+  if (selectedCities.length === 0) return true;
+  
+  const fromCity = event.location?.from?.city || '';
+  const toCity = event.location?.destination?.city || '';
+  
+  return selectedCities.some(city => 
+    fromCity.includes(city) || toCity.includes(city)
+  );
 };
 
 // 根據篩選條件過濾事件
 const filteredEvents = computed(() => {
   let result = [...events.value];
   
-  if (filterType.value !== 'all') {
-    result = result.filter(event => event.type === filterType.value);
+  // 篩選有剩餘空位的活動
+  if (currentFilters.value.hasAvailableSpots) {
+    result = result.filter(event => event.spotsRemaining > 0);
+  }
+  
+  // 篩選時間範圍
+  if (currentFilters.value.withinWeek) {
+    const { start, end } = getDateRange('week');
+    result = result.filter(event => {
+      const eventDate = new Date(event.date);
+      return eventDate >= start && eventDate <= end;
+    });
+  } else if (currentFilters.value.withinMonth) {
+    const { start, end } = getDateRange('month');
+    result = result.filter(event => {
+      const eventDate = new Date(event.date);
+      return eventDate >= start && eventDate <= end;
+    });
+  }
+  
+  // 篩選城市
+  if (currentFilters.value.cities.length > 0) {
+    result = result.filter(event => checkCityMatch(event, currentFilters.value.cities));
   }
   
   // 排序
   result.sort((a, b) => {
-    switch (sortBy.value) {
-      case 'date-asc':
-        return new Date(a.datetime) - new Date(b.datetime);
-      case 'date-desc':
-        return new Date(b.datetime) - new Date(a.datetime);
-      case 'price-asc':
-        return a.price - b.price;
-      case 'price-desc':
-        return b.price - a.price;
-      case 'spots-asc':
-        return a.spotsRemaining - b.spotsRemaining;
-      case 'spots-desc':
+    switch (currentSort.value) {
+      case 'spotsRemaining-desc':
         return b.spotsRemaining - a.spotsRemaining;
+      case 'spotsRemaining-asc':
+        return a.spotsRemaining - b.spotsRemaining;
+      case 'date-asc':
+        return new Date(a.date) - new Date(b.date);
+      case 'date-desc':
+        return new Date(b.date) - new Date(a.date);
+      case 'city-asc':
+        const cityA = a.location?.from?.city || '';
+        const cityB = b.location?.from?.city || '';
+        return cityA.localeCompare(cityB);
+      case 'city-desc':
+        const cityA2 = a.location?.from?.city || '';
+        const cityB2 = b.location?.from?.city || '';
+        return cityB2.localeCompare(cityA2);
+      case 'price-asc':
+        return (a.price || 0) - (b.price || 0);
+      case 'price-desc':
+        return (b.price || 0) - (a.price || 0);
       default:
         return 0;
     }
   });
-  console.log('篩選後剩餘event數量:', result.length)
-
+  
+  console.log('篩選後剩餘event數量:', result.length);
   return result;
 });
 
@@ -268,13 +477,21 @@ const eventsToDisplay = computed(() => {
 const fetchEvents = async () => {
   loading.value = true
   try {
-    const res = await axios.get('http://localhost:5000/events')
-    events.value = res.data
+    events.value = await eventService.getAllEvents()   // 注意：你需要把 getAllEvents() 寫進 useEvents.js
+    console.log('✅ 活動資料已載入', events.value)
   } catch (err) {
     console.error('❌ 無法取得活動資料:', err)
   } finally {
     loading.value = false
   }
-  console.log('✅ 活動資料已載入', events.value)
 }
+
+const fetchMyEvents = async () => {
+  try {
+    await eventService.initJoinedEvents()
+  } catch (err) {
+    console.error('❌ getMyEvents 發生錯誤', err)
+  }
+}
+
 </script>
