@@ -106,7 +106,9 @@ const videoDataList = [
     
     <!-- Final transition with image zoom -->
     <TransitionPart :image-position="imagePosition" ref="transitionRef" />
+     
   </div>
+  <Wave class="force-bottom-right" />
 </template>
 
 <script setup>
@@ -118,6 +120,7 @@ import IntroductionPart from '@/components/Layout/IntroductionPart.vue';
 import Element1Part from '@/components/Layout/Element1Part.vue';
 import Element2Part from '@/components/Layout/Element2Part.vue';
 import TransitionPart from '@/components/Layout/TransitionPart.vue';
+import Wave from '@/components/Layout/Small/Wave.vue';
 
 // Register ScrollTrigger plugin with GSAP
 gsap.registerPlugin(ScrollTrigger);
