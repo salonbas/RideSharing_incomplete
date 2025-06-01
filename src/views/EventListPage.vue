@@ -205,6 +205,7 @@ const showProfileBox = ref(false);
 const selectedOrganizer = ref(null);
 
 const handleFromCitySelect = (cityName) => {
+  console.log(cityName)
   notClicked.value = false;
   if (!currentFilters.value.cities.includes(cityName)) {
     currentFilters.value.cities.push(cityName);
