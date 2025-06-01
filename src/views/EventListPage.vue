@@ -2,7 +2,8 @@
 <template>
   <div class="min-h-screen bg-[#12150e] text-white">
     <div class="px-4 sm:px-6 md:px-12 lg:px-20 py-8">
-      <div class="max-w-[85vw] mx-auto">
+      <BottonSvg v-if="notClicked" @select="handleFromCitySelect" />
+      <div v-else class="max-w-[85vw] mx-auto">
       <!-- 頂部區域：創建活動按鈕 -->
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-4xl font-bold text-[#d1ad41]">活動列表</h1>
@@ -167,6 +168,7 @@ import EventDetail from '../components/Event/EventDetail.vue'
 import EventFilterSort from '../components/Event/EventFilterSort.vue'
 import PaginationBar from '../components/Event/PaginationBar.vue'
 import ProfileBox from '../components/Profile/ProfileBox.vue'
+import BottonSvg from '@/components/Event/BottonSvg.vue'
 
 const eventService = useEventService()
 
@@ -181,7 +183,7 @@ const {
   hasJoinedEvent
 } = eventService
 
-
+const notClicked = ref(true)
 const playAnim = ref(false)
 
 const auth = useAuthStore()
@@ -202,6 +204,13 @@ const itemsPerPage = 8;
 const showProfileBox = ref(false);
 const selectedOrganizer = ref(null);
 
+const handleFromCitySelect = (cityName) => {
+  console.log(cityName)
+  notClicked.value = false;
+  if (!currentFilters.value.cities.includes(cityName)) {
+    currentFilters.value.cities.push(cityName);
+  }
+}
 // 排序和篩選狀態
 const currentSort = ref('spotsRemaining-desc');
 const currentFilters = ref({
