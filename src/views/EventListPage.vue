@@ -2,7 +2,9 @@
 <template>
   <div class="min-h-screen bg-[#12150e] text-white">
     <div class="px-4 sm:px-6 md:px-12 lg:px-20 py-8">
-      <BottonSvg v-if="notClicked" @select="handleFromCitySelect" />
+      <div v-if="notClicked" class="flex justify-center overflow-visible pb-10 mb-60">
+        <BottonSvg @select="handleFromCitySelect" />
+      </div>
       <div v-else class="max-w-[85vw] mx-auto">
       <!-- 頂部區域：創建活動按鈕 -->
         <div class="flex justify-between items-center mb-6">

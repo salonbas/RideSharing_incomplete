@@ -26,20 +26,20 @@
             <div class="text-xl font-semibold truncate group-hover:text-[#1a1a1a]">
               {{ eventData.organizer.nickname }}
             </div>
-            <div class="text-sm text-gray-300 w-full break-words whitespace-normal group-hover:text-[#1a1a1a]">
+            <!-- <div class="text-sm text-gray-300 w-full break-words whitespace-normal group-hover:text-[#1a1a1a]">
               {{ eventData.location.from.city }} {{ eventData.location.from.detail }}
               →
               {{ eventData.location.destination.city }} {{ eventData.location.destination.detail }}
-            </div>
+            </div> -->
           </div>
         </div>
 
         <div class="flex-1 flex">
         <!-- 下半部：資訊 3:1 -->
-        <div class="w-3/4 space-y-1 text-sm text-gray-300 flex flex-col justify-center items-start pl-4 group-hover:text-[#1a1a1a]">
-          <div>時間： {{ formattedDate }}</div>
-          <div>金額： {{ eventData.price === 0 ? '免費' : `$${eventData.price}` }}</div>
-          <div>地點： {{ eventData.location.from.city }} {{ eventData.location.from.detail }}
+        <div class="w-3/4 space-y-1 text-base text-gray-300 flex flex-col justify-center items-start pl-4 group-hover:text-[#1a1a1a]">
+          <div>時間／ {{ formattedDate }}</div>
+          <div>金額／ {{ eventData.price === 0 ? '免費' : `$${eventData.price}` }}</div>
+          <div>地點／ {{ eventData.location.from.city }} {{ eventData.location.from.detail }}<br />
                     →
                   {{ eventData.location.destination.city }} {{ eventData.location.destination.detail }}
           </div>
@@ -57,7 +57,7 @@
             @click="$emit('join-event', eventData.id)"
             :disabled="isOrganizer || eventData.spotsRemaining <= 0"
           >
-            <span class="btn-text group-hover:text-[#1a1a1a]">
+            <span class="btn-text whitespace-nowrap group-hover:text-[#1a1a1a]">
               {{ btnText }}
             </span>
             <svg viewBox="0 0 100 40" preserveAspectRatio="none">
@@ -99,20 +99,20 @@
           <!-- 下半部：詳細資訊 3:1 -->
           <div class="w-3/4 space-y-2 text-sm text-gray-300 flex flex-col justify-center items-start pl-4 group-hover:text-[#1a1a1a]">
             <div class="flex items-center">
-              <span class="font-medium w-12">時間</span>
+              <span class="font-medium w-12">時間／</span>
               <span class="ml-2">{{ formattedDate }}</span>
             </div>
             <div class="flex items-center">
-              <span class="font-medium w-12">人數</span>
+              <span class="font-medium w-12">人數／</span>
               <span class="ml-2">{{ eventData.joinedSeats }}/{{ eventData.requiredSeats }}</span>
             </div>
             <div class="flex items-center">
-              <span class="font-medium w-12">費用</span>
+              <span class="font-medium w-12">費用／</span>
               <span class="ml-2">{{ eventData.price === 0 ? '免費' : `$${eventData.price}` }}</span>
             </div>
             <div class="flex items-start">
-              <span class="font-medium w-12 mt-0.5">備註</span>
-              <span class="ml-2 text-xs leading-relaxed">{{ eventData.description || '無特殊說明' }}</span>
+              <span class="font-medium w-12 mt-0.5">備註／</span>
+              <span class="ml-2 mt-0.5 leading-relaxed">{{ eventData.description || '無特殊說明' }}</span>
             </div>
           </div>
           <!-- 右側 1 欄 -->
@@ -128,7 +128,7 @@
               @click.stop="handleButtonClick"
               :disabled="eventData.spotsRemaining <= 0 && !isOrganizer && !isJoined"
             >
-              <span class="btn-text group-hover:text-[#1a1a1a]">
+              <span class="btn-text whitespace-nowrap group-hover:text-[#1a1a1a]">
                 {{ btnText }}
               </span>
               <svg viewBox="0 0 100 40" preserveAspectRatio="none">
@@ -184,15 +184,23 @@ const isJoined = computed(() => {
 })
 
 const btnText = computed(() => {
-  if (isOrganizer.value) return "取消活動"
+  if (isOrganizer.value) return "取消"
   if (isJoined.value) return "退出"
   return "卡"
 })
 
 const btnClass = computed(() => {
   if (!props.eventData) return "btn bg-[#12150e]"
-  if (isOrganizer.value || isJoined.value) return "btn btn-secondary bg-[#12150e]"
-  return "btn bg-[#12150e]"
+
+  if (isOrganizer.value) {
+    return "btn bg-[#12150e] text-orange-500" // 主辦人：取消活動
+  }
+
+  if (isJoined.value) {
+    return "btn bg-[#12150e] text-green-400" // 已加入：退出
+  }
+
+  return "btn bg-[#12150e]" // 預設：卡
 })
 
 

@@ -2,18 +2,17 @@
 <template>
   <nav class="bg-[#12150e] text-white shadow-md ">
     <div class="max-w-screen mx-auto px-20">
-      <div class="flex justify-between items-center h-16">
+      <div class="flex justify-between items-center h-16 relative">
         <!-- 左側 Logo 區 -->
         <div class="flex items-center">
+          <!-- <img src="@/assets/logo.png" alt="Logo" class="h-[40px] w-[40px] sm:h-[8vh] sm:w-auto" /> -->
           <router-link to="/" class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
+            <img src="@/assets/englishlogo.png" alt="首頁" class="h-[40px] w-[40px] sm:h-[10vh] sm:w-auto object-contain" />
           </router-link>
         </div>
         
         <!-- 中間導航區 -->
-        <div class="hidden md:flex space-x-12 items-center">
+        <div class="absolute left-1/2 -translate-x-1/2 hidden md:flex space-x-12 items-center">
           <router-link to="/" class="btn group">
             <span class="btn-text flex items-center">
               <span class="wave-char">首</span>
