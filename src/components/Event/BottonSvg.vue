@@ -77,13 +77,17 @@ const handleClick = (e) => {
 
 .map-label {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  padding: 4px 8px;
-  background-color: #333;
-  color: white;
-  border-radius: 4px;
-  font-size: 14px;
+  top: 5%;
+  left: 5%;
+  padding: 0.5em 1em;
+  background-color: rgba(255, 215, 0, 0.9);
+  color: #12150e;
+  border-radius: 0.5em;
+  font-size: 1.2vw; /* 隨視窗寬度調整字體大小 */
+  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+  pointer-events: none;
 }
 
 path {
