@@ -48,6 +48,8 @@ tree /F
 json-server --watch db.json --port 3000
 python controllers/app.py
 alembic init alembic
+npm install three
+
 
 
 安裝必要套件:
