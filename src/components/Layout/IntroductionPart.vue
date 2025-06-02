@@ -69,7 +69,7 @@ onMounted(() => {
 <style scoped>
 .introduction-part {
   height: 200vh;
-  background-color: #12150e;
+  background-color: transparent;
   padding: 20vh 10vw;
   color: #d1ad44;
   font-family: 'Unbounded', sans-serif;

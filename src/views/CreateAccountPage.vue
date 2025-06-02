@@ -1,6 +1,7 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-black text-[#FFD700]">
-    <div class="w-full max-w-md md:max-w-lg lg:max-w-xl p-8 border rounded-lg shadow-xl bg-black border-gradient">
+  <div class="min-h-screen flex items-center justify-center bg-black text-[#FFD700] relative">
+    <div class="sky" ref="skyRef"></div>
+    <div class="w-full max-w-md md:max-w-lg lg:max-w-xl p-8 border rounded-lg shadow-xl bg-black border-gradient z-10">
       <h2 class="text-3xl font-semibold mb-6 text-center font-sans">創建帳號</h2>
       <form @submit.prevent="handleRegister">
         <input
@@ -31,7 +32,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
@@ -39,6 +40,45 @@ const username = ref('')
 const password = ref('')
 const email = ref('')
 const router = useRouter()
+
+const skyRef = ref(null)
+
+onMounted(async () => {
+  await nextTick()
+  const sky = skyRef.value
+  if (!sky) return
+
+  // ⭐ 產生星星
+  for (let i = 0; i < 200; i++) {
+    const star = document.createElement('div')
+    star.classList.add('star')
+    star.style.top = `${Math.random() * 100}%`
+    star.style.left = `${Math.random() * 100}%`
+    const size = Math.random() * 2 + 1
+    star.style.width = `${size}px`
+    star.style.height = `${size}px`
+
+    const duration = 1.5 + Math.random() * 2
+    const delay = Math.random() * 2
+    star.style.animationDuration = `${duration}s`
+    star.style.animationDelay = `${delay}s`
+    
+    sky.appendChild(star)
+  }
+
+  // 🌠 流星
+  setInterval(() => {
+    if (Math.random() < 0.6) {
+      const meteor = document.createElement('div')
+      meteor.classList.add('shooting-star')
+      meteor.style.top = `${Math.random() * 80}%`
+      meteor.style.left = `-${Math.random() * 200 + 50}px`
+      meteor.style.width = `${100 + Math.random() * 60}px`
+      sky.appendChild(meteor)
+      setTimeout(() => meteor.remove(), 3500)
+    }
+  }, 2000)
+})
 
 async function handleRegister() {
   const usernameValid = /^[A-Za-z0-9]{1,10}$/.test(username.value)
@@ -104,5 +144,49 @@ h2 {
 .border-gradient {
   border-width: 1px;
   border-image: linear-gradient(to right, #ffffff80, #FFD700) 1;
+}
+</style>
+
+<style>
+.sky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  animation: twinkle 2s infinite ease-in-out alternate;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 1; }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 140px;
+  height: 2px;
+  background: linear-gradient(to left, white, rgba(255, 255, 255, 0));
+  opacity: 0;
+  animation: shoot 3s ease-out forwards;
+  z-index: 20;
+  pointer-events: none;
+  transform: rotate(35deg);
+}
+
+@keyframes shoot {
+  0% { transform: translate(0, 0) rotate(35deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translate(800px, 400px) rotate(35deg); opacity: 0; }
 }
 </style>
