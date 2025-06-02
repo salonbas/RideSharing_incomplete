@@ -1,11 +1,5 @@
 <template>
   <div class="logo-moving-part">
-    <!-- 星星背景 -->
-    <div class="star star-1"></div>
-    <div class="star star-2"></div>
-    <div class="star star-3"></div>
-    <div class="star star-4"></div>
-
     <!-- BooJo 跑馬燈 -->
     <div class="marquee-wrapper">
       <div class="marquee-text">
@@ -81,7 +75,7 @@ const animateImage = () => {
 @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700&display=swap');
 
 .logo-moving-part {
-  background-color: #12150e;
+  background-color: transparent;
   width: 100%;
   height: 100vh;
   position: relative;
@@ -89,26 +83,6 @@ const animateImage = () => {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-}
-
-/* 星星動畫 */
-.star {
-  position: absolute;
-  background: rgba(255, 255, 200, 0.4);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  animation: twinkle 2s ease-in-out infinite alternate;
-  z-index: 1;
-}
-.star-1 { top: 10%; left: 20%; animation-delay: 0s; }
-.star-2 { top: 30%; left: 80%; animation-delay: 1s; }
-.star-3 { top: 70%; left: 40%; animation-delay: 2s; }
-.star-4 { top: 85%; left: 60%; animation-delay: 1.5s; }
-
-@keyframes twinkle {
-  from { opacity: 0.2; transform: scale(1); }
-  to { opacity: 1; transform: scale(1.5); }
 }
 
 /* 跑馬燈外層裁切 */

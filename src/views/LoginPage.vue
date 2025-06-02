@@ -1,91 +1,279 @@
-//src\views\LoginPage.vue
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-b from-yellow-300 to-black">
-    <div class="w-full max-w-md md:max-w-lg lg:max-w-xl p-8 bg-white rounded-lg shadow-xl">
-      <h2 class="text-3xl font-semibold mb-6 text-center font-sans">登入</h2>
+  <div class="min-h-screen flex items-center justify-center bg-black text-[#FFD700] overflow-hidden relative">
+    <!-- 🌌 星空背景 -->
+    <div class="sky" ref="skyRef"></div>
+
+    <!-- 登入框 - 使用金色渐变边框样式 -->
+    <div class="p-[1px] rounded-xl bg-gradient-to-br from-yellow-400 via-orange-400 to-yellow-600 w-full max-w-md md:max-w-lg shadow-[0_0_12px_rgba(255,191,0,0.4)] mx-4 z-10">
+      <div class="bg-[#0d0d0d] rounded-xl px-6 md:px-10 py-10 text-[#e4c35d] space-y-6">
+        <h2 class="text-4xl font-bold tracking-wide text-center text-yellow-300 font-serif drop-shadow-[0_1px_3px_rgba(255,191,0,0.3)]">登入</h2>
+        
         <form @submit.prevent="handleLogin">
-          <input
-            type="text"
-            v-model="username"
-            placeholder="username"
-            class="input mb-4"
-          />
-          <input
-          type="password"
-          v-model="password"
-          placeholder="Password"
-          class="input mb-4"
-          />
-          <button type="submit" class="btn w-full">登入</button>
-          <router-link to="/forgot-password" class="text-sm text-blue-600 hover:underline block mt-3 text-center">
-            忘記密碼？
-          </router-link>
-          <router-link to="/create-account" class="text-sm text-blue-600 hover:underline block mt-3 text-center">
-           創建帳號
-          </router-link>
+          <div class="mb-4">
+            <input
+              type="text"
+              v-model="username"
+              placeholder="使用者名稱"
+              class="input"
+              required
+            />
+          </div>
+          
+          <div class="mb-6">
+            <input
+              type="password"
+              v-model="password"
+              placeholder="密碼"
+              class="input"
+              required
+            />
+          </div>
+          
+          <button type="submit" class="login-btn w-full" @click="createRipple($event)">
+            登入
+          </button>
+          
+          <div class="text-center mt-4 space-y-2">
+            <router-link to="/forgot-password" class="link block">
+              忘記密碼？
+            </router-link>
+            <router-link to="/create-password" class="link block">
+              創建帳號
+            </router-link>
+          </div>
         </form>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import axios from 'axios'
-import { useAuthStore } from '@/stores/authStore'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
 
 const username = ref('')
 const password = ref('')
+const skyRef = ref(null)
 const auth = useAuthStore()
 const router = useRouter()
 
+// 🌠 星空與流星
+onMounted(async () => {
+  await nextTick()
+
+  const sky = skyRef.value
+  if (!sky) {
+    console.warn('❌ skyRef 為 null，請檢查是否正確綁定 ref')
+    return
+  }
+
+  // ⭐ 建立星星
+  for (let i = 0; i < 200; i++) {
+    const star = document.createElement('div')
+    star.classList.add('star')
+
+    star.style.top = `${Math.random() * 100}%`
+    star.style.left = `${Math.random() * 100}%`
+
+    const size = Math.random() * 2 + 1
+    star.style.width = `${size}px`
+    star.style.height = `${size}px`
+
+    const duration = 1.5 + Math.random() * 2
+    const delay = Math.random() * 2
+    star.style.animationDuration = `${duration}s`
+    star.style.animationDelay = `${delay}s`
+
+    sky.appendChild(star)
+  }
+
+  // 🌠 流星效果
+  setInterval(() => {
+    if (Math.random() < 0.6) {
+      const meteor = document.createElement('div')
+      meteor.classList.add('shooting-star')
+
+      meteor.style.top = `${Math.random() * 80}%`
+      meteor.style.left = `-${Math.random() * 200 + 50}px`
+      meteor.style.width = `${100 + Math.random() * 60}px`
+
+      skyRef.value.appendChild(meteor)
+      setTimeout(() => meteor.remove(), 3500)
+    }
+  }, 2000)
+})
+
+// 🌀 Ripple 效果
+function createRipple(event) {
+  const button = event.currentTarget
+  const ripple = document.createElement('span')
+  const diameter = Math.max(button.clientWidth, button.clientHeight)
+  const radius = diameter / 2
+
+  ripple.style.width = ripple.style.height = `${diameter}px`
+  ripple.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`
+  ripple.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`
+  ripple.classList.add('ripple')
+
+  const existing = button.querySelector('.ripple')
+  if (existing) existing.remove()
+
+  button.appendChild(ripple)
+  ripple.addEventListener('animationend', () => ripple.remove())
+}
+
+// 🔐 登入 API
 async function handleLogin() {
-  console.log('🚀 handleLogin triggered')
   try {
     const res = await axios.post('http://localhost:5000/login', {
       username: username.value,
       password: password.value
     })
-    console.log(auth.login.toString())
-
     const { token, user } = res.data
     auth.login(user, token)
-    auth.login(user, token)
-
-    console.log('✅ login() 執行完畢')
-    console.log('auth.isLoggedIn:', auth.isLoggedIn)
-    console.log('auth.user:', auth.user)
-    console.log('auth.token:', auth.token)
-
-    console.log('✅ 登入成功，準備導向首頁')
     router.push('/')
   } catch (err) {
     console.error('❌ 登入失敗:', err)
-    alert('登入失敗')
+    alert(err.response?.data?.message || '登入失敗，請確認帳號密碼')
   }
 }
 </script>
 
-<style scoped>
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
+/* 📄 輸入框樣式 */
 .input {
-  @apply w-full px-4 py-2 border border-gray-300 rounded;
+  @apply w-full px-4 py-2 border rounded;
+  background-color: transparent;
+  color: #FFD700;
   font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+}
+
+.input::placeholder {
+  color: rgba(255, 215, 0, 0.5);
 }
 
 .input:focus {
   outline: none;
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5); /* Optional */
+  border-color: #FFD700;
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
 }
 
-.btn {
-  @apply bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition;
+/* 🔵 登入按鈕 */
+.login-btn {
+  @apply font-semibold py-2 px-4 transition;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 50%, #1a1a1a 100%);
+  border: 1px solid;
+  border-image: linear-gradient(145deg, #B8860B 0%, #FFD700 50%, #B8860B 100%) 1;
+  color: #FFD700 !important;
   font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 
+              inset 0 1px 0 rgba(255, 215, 0, 0.1), 
+              inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+              0 0 20px rgba(255, 215, 0, 0.1);
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.3);
 }
 
+.login-btn:hover {
+  background: linear-gradient(145deg, #262626 0%, #1a1a1a 50%, #262626 100%);
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6), 
+              inset 0 1px 0 rgba(255, 215, 0, 0.2), 
+              inset 0 -1px 0 rgba(0, 0, 0, 0.7),
+              0 0 30px rgba(255, 215, 0, 0.2);
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+}
+
+/* 🌊 Ripple 特效 */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-animation 600ms linear;
+  background-color: rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* 🌌 星空背景 */
+.sky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ⭐ 星星 */
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  animation: twinkle 2s infinite ease-in-out alternate;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 1; }
+}
+
+/* 🌠 流星 */
+.shooting-star {
+  position: absolute;
+  width: 140px;
+  height: 2px;
+  background: linear-gradient(to left, white, rgba(255, 255, 255, 0));
+  opacity: 0;
+  animation: shoot 3s ease-out forwards;
+  z-index: 20;
+  pointer-events: none;
+  transform: rotate(35deg);
+}
+
+@keyframes shoot {
+  0% {
+    transform: translate(0, 0) rotate(35deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(800px, 400px) rotate(35deg);
+    opacity: 0;
+  }
+}
+
+/* 標題字體 */
 h2 {
   font-family: 'Inter', sans-serif;
+}
+
+/* 链接样式 */
+.link {
+  color: #FFD700;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-family: 'Inter', sans-serif;
+}
+.link:hover {
+  text-decoration: underline;
+  opacity: 0.8;
 }
 </style>
