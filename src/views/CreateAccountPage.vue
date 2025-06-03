@@ -29,17 +29,20 @@
       </form>
     </div>
   </div>
+  <Wave class="force-bottom-right" />
 </template>
 
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
+import Wave from '@/components/Layout/Small/Wave.vue'
 
 const username = ref('')
 const password = ref('')
 const email = ref('')
 const router = useRouter()
+const authStore = useAuthStore()
 
 const skyRef = ref(null)
 
@@ -48,7 +51,7 @@ onMounted(async () => {
   const sky = skyRef.value
   if (!sky) return
 
-  // ⭐ 產生星星
+  // 產生星星
   for (let i = 0; i < 200; i++) {
     const star = document.createElement('div')
     star.classList.add('star')
@@ -57,12 +60,10 @@ onMounted(async () => {
     const size = Math.random() * 2 + 1
     star.style.width = `${size}px`
     star.style.height = `${size}px`
-
     const duration = 1.5 + Math.random() * 2
     const delay = Math.random() * 2
     star.style.animationDuration = `${duration}s`
     star.style.animationDelay = `${delay}s`
-    
     sky.appendChild(star)
   }
 
@@ -89,19 +90,17 @@ async function handleRegister() {
     alert("帳號格式錯誤：限10字內，僅含英數")
     return
   }
-
   if (!passwordValid) {
     alert("密碼格式錯誤：限8字內，僅含英數")
     return
   }
-
   if (!emailValid) {
     alert("Email 格式錯誤")
     return
   }
 
   try {
-    const res = await axios.post('http://localhost:5000/register', {
+    await authStore.register({
       username: username.value,
       password: password.value,
       email: email.value
@@ -109,7 +108,7 @@ async function handleRegister() {
     alert('註冊成功！請登入')
     router.push('/login')
   } catch (err) {
-    console.error('❌ 註冊失敗:', err)
+    console.error('註冊失敗:', err)
     alert(err?.response?.data?.msg || '註冊失敗')
   }
 }

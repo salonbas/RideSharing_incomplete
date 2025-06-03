@@ -97,6 +97,7 @@
       </div>
     </div>
   </div>
+  <Wave class="force-bottom-right" />
 </template>
 
 <script setup>
@@ -107,6 +108,7 @@ import { useEventService } from '@/composables/useEvents'
 import EventCard from '../components/Event/EventCard.vue'
 import EventDetail from '../components/Event/EventDetail.vue'
 import ProfileBox from '../components/Profile/ProfileBox.vue'
+import Wave from '@/components/Layout/Small/Wave.vue';
 
 const eventService = useEventService()
 const auth = useAuthStore()

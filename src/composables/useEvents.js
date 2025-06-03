@@ -4,7 +4,8 @@ import { ref, computed } from 'vue'
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 
-const API_URL = 'http://localhost:5000'
+const API_URL = 'https://ridesharingbackend-production.up.railway.app'
+//const API_URL = 'http://localhost:5000'
 
 export const useEventService = () => {
   const auth = useAuthStore()

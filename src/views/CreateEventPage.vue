@@ -149,10 +149,13 @@
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import BottonSvg from '@/components/Event/BottonSvg.vue'
-import axios from 'axios'
+import { useEventService } from '@/composables/useEvents'
 
+// 取得 router & 事件服務
 const router = useRouter()
+const eventService = useEventService()
 
+// 活動表單資料
 const eventData = reactive({
   title: '',
   description: '',
@@ -166,19 +169,22 @@ const eventData = reactive({
   contactMethod: ''
 })
 
+// 出發地選擇器處理
 const handleFromCitySelect = (cityName) => {
   eventData.fromCity = cityName
 }
 
+// 目的地選擇器處理
 const handleToCitySelect = (cityName) => {
   eventData.toCity = cityName
 }
 
+// 取消按鈕返回上一頁
 const handleCancel = () => {
-  // 返回上一頁或首頁
   router.go(-1)
 }
 
+// 重置表單
 const resetForm = () => {
   eventData.title = ''
   eventData.description = ''
@@ -192,6 +198,7 @@ const resetForm = () => {
   eventData.contactMethod = ''
 }
 
+// 發起活動送出
 const handleCreateEvent = async () => {
   if (!eventData.title || !eventData.description || !eventData.type || 
       !eventData.date || !eventData.requiredSeats || !eventData.contactMethod) {
@@ -199,24 +206,14 @@ const handleCreateEvent = async () => {
     return
   }
 
-  const token = localStorage.getItem('token')  // 假設你登入後有存 token
-
   try {
-    const response = await axios.post('http://localhost:5000/events/create', eventData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    })
-
-    console.log("SUCCESS: Created event:", response.data)
+    const response = await eventService.createEvent(eventData)
+    console.log("✅ 活動創建成功:", response)
     alert("活動創建成功！")
-
     resetForm()
-    router.push({ name: 'events' })
-
+    router.push({ name: 'events' }) // ✅ 這裡路由跳轉可依照你自己實際命名
   } catch (error) {
-    console.error("ERROR: Failed to create event", error)
+    console.error("❌ 活動創建失敗:", error)
     alert("活動創建失敗，請稍後再試")
   }
 }
