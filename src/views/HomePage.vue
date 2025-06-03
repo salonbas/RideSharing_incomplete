@@ -17,7 +17,6 @@
     <TransitionPart :image-position="imagePosition" ref="transitionRef" />
      
   </div>
-  <Wave class="force-bottom-right" />
 </template>
 
 <script setup>
@@ -27,7 +26,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import LogoMovingPart from '@/components/Layout/LogoMovingPart.vue';
 import IntroductionPart from '@/components/Layout/IntroductionPart.vue';
 import TransitionPart from '@/components/Layout/TransitionPart.vue';
-import Wave from '@/components/Layout/Small/Wave.vue';
 
 // 星空部分
 const skyRef = ref(null);

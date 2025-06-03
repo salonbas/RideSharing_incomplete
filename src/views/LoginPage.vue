@@ -34,10 +34,7 @@
           </button>
           
           <div class="text-center mt-4 space-y-2">
-            <router-link to="/forgot-password" class="link block">
-              忘記密碼？
-            </router-link>
-            <router-link to="/create-password" class="link block">
+            <router-link to="/create-account" class="link block">
               創建帳號
             </router-link>
           </div>
@@ -45,6 +42,7 @@
       </div>
     </div>
   </div>
+  <Wave class="force-bottom-right" />
 </template>
 
 <script setup>
@@ -52,6 +50,7 @@ import { ref, onMounted, nextTick } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
+import Wave from '@/components/Layout/Small/Wave.vue';
 
 const username = ref('')
 const password = ref('')
@@ -124,21 +123,19 @@ function createRipple(event) {
   ripple.addEventListener('animationend', () => ripple.remove())
 }
 
-// 🔐 登入 API
 async function handleLogin() {
   try {
-    const res = await axios.post('http://localhost:5000/login', {
+    await auth.loginUser({
       username: username.value,
       password: password.value
     })
-    const { token, user } = res.data
-    auth.login(user, token)
     router.push('/')
   } catch (err) {
     console.error('❌ 登入失敗:', err)
-    alert(err.response?.data?.message || '登入失敗，請確認帳號密碼')
+    alert(err?.response?.data?.msg || '登入失敗，請確認帳號密碼')
   }
 }
+
 </script>
 
 <style>

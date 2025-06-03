@@ -32,12 +32,20 @@ onMounted(async () => {
     opacity: 0
   })
 
-  // 這邊等待 Helix 動畫流程完整執行
-  await helixRef.value.initializeHelix()  // 初始化
-  await helixRef.value.startAnimation()   // 全動畫序列執行
 
-  const observer = new IntersectionObserver((entries) => {
+  const observer = new IntersectionObserver(async (entries) => {
+      
     if (entries[0].isIntersecting && !hasNavigated.value) {
+      
+    alert("start")
+    helixRef.value?.$el?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
+    
+    // 這邊等待 Helix 動畫流程完整執行
+    await helixRef.value.initializeHelix()  // 初始化
+    await helixRef.value.startAnimation()   // 全動畫序列執行
       // 放大到指定倍率的動畫
       gsap.to(taiwanMapContainer.value, {
         scale: targetScale.value,

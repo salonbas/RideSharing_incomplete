@@ -9,7 +9,7 @@
     >
       <div class="relative max-w-md max-h-96">
         <img 
-          :src="userInfo.avatarUrl || '/default-avatar.png'" 
+          :src="fullAvatarUrl || '/default-avatar.png'" 
           alt="頭像"
           class="w-full h-full object-cover rounded-lg shadow-2xl border border-[#FFD700]"
           @click.stop
@@ -45,7 +45,7 @@
         <div class="flex items-center space-x-4">
           <div class="relative">
             <img 
-              :src="userInfo.avatarUrl || '/default-avatar.png'" 
+              :src="fullAvatarUrl || '/default-avatar.png'" 
               alt="頭像"
               class="w-20 h-20 rounded-full object-cover cursor-pointer border-2 border-[#FFD700]"
               @click="showAvatarModal = true"
@@ -281,6 +281,14 @@ const handleSave = async () => {
     isLoading.value = false
   }
 }
+const API_URL = 'https://ridesharingbackend-production.up.railway.app'
+
+const fullAvatarUrl = computed(() => {
+  return userInfo.avatarUrl 
+    ? `${API_URL}${userInfo.avatarUrl}` 
+    : '/default-avatar.png'
+})
+
 
 const triggerFileUpload = () => {
   if (fileInput.value) {

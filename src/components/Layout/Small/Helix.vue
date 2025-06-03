@@ -106,7 +106,7 @@ const project3DTo2D = (point) => {
 // ============ Helix Generation ============
 const generateHelixPoints = () => {
   const points = []
-  const tMin = -12
+  const tMin = -16
   const tMax = 12
   const step = 0.08
   
@@ -161,7 +161,7 @@ const drawHelix = () => {
     return project3DTo2D(rotatedPoint)
   })
 
-  drawAxes(combinedMatrix)
+  //drawAxes(combinedMatrix)
 
   if (points2D.length > 1) {
     ctx.strokeStyle = '#F7C71F'
@@ -199,7 +199,7 @@ const animation1_SpringRotation = async () => {
   currentAnimation.value = 'Spring Rotation with Bounce'
   await new Promise(resolve => {
     const tl = gsap.timeline({ onComplete: resolve })
-    tl.to(rotationX, { duration: 4, value: Math.PI * 2, ease: "bounce.out" }, 0)
+    tl.to(rotationX, { duration: 3, value: Math.PI * 2, ease: "bounce.out" }, 0)
     tl.to(rotationZ, { duration: 3, value: Math.PI * 2, ease: "elastic.out(1, 0.3)" }, 0)
     tl.to(scale, { duration: 1, value: 150, ease: "power2.out", repeat: 2, yoyo: true }, 2)
     tl.to(scale, { duration: 1, value: 100, ease: "power2.out", repeat: 2, yoyo: true }, 2)
@@ -220,24 +220,39 @@ const animation4_SideViewAmplitudeFunctions = async () => {
     tl.to(scale, { duration: 3, value: 10, ease: "power3.out" }, 0)
     tl.to(helixFactor, { duration: 3, value: 5, ease: "power3.out" }, 0)
     tl.to(speed, { duration: 3, value: 6, ease: "power3.out" }, 0)
-    tl.to(rotationX, { duration: 2, value: rotationX.value + Math.PI * 2, ease: "power2.inOut" })
-      .to(rotationY, { duration: 2, value: rotationY.value + Math.PI * 1.5 +Math.PI/6, ease: "power2.inOut" }, 0.5)
-      .to(rotationZ, { duration: 2, value: rotationZ.value + Math.PI , ease: "power2.inOut" }, 1)
 
   })
 }
-
 // 動畫三：消失至無限放大
 const animation5_SwirlExpansion = async () => {
   currentAnimation.value = 'Swirl Expansion to Infinity'
   await new Promise(resolve => {
     const tl = gsap.timeline({ onComplete: resolve })
+    // 回到軸心視角
     tl.to(rotationX, { duration: 2, value: 0, ease: "none" }, 0)
-      .to(rotationY, { duration: 2, value: 0, ease: "none" }, 0)
-      .to(rotationZ, { duration: 2, value: 0, ease: "none" }, 0)
-      .to(rotationZ, { duration: 4, value: Math.PI*4.5 , ease: "power2.out" },2)
-      .to(scale, { duration: 3, value: 60, ease: "power3.out" }, 2)
-      .to(opacity, { duration: 3, value: 0, ease: "power2.in" }, 3)
+      .to(rotationY, { duration: 2, value: 0, ease: "none" }, 1)
+      .to(rotationZ, { duration: 1.5, value: 0, ease: "none" }, 2)
+      
+      // 創造戲劇性的漩渦效果
+      .to(rotationZ, { duration: 4, value: Math.PI*4.5, ease: "power2.out" }, 3)
+      
+      // 多層次的縮放效果 - 先收縮再爆炸式放大
+      .to(scale, { duration: 1, value: 50, ease: "power2.in" }, 3)
+      .to(scale, { duration: 2, value: 200, ease: "expo.out" }, 4)
+      
+      // 螺旋密度變化 - 創造更密集的漩渦
+      .to(helixFactor, { duration: 3, value: 0.1, ease: "power3.out" }, 3.5)
+      
+      // 速度變化 - 創造加速旋轉效果
+      //.to(speed, { duration: 2, value: 12, ease: "expo.out" }, 3)
+      //.to(speed, { duration: 2, value: 2, ease: "power2.out" }, 4)
+      
+      // 振幅的波動效果 - 創造呼吸感
+      .to(amplitude, { duration: 1.5, value: 2.5, ease: "power2.out" }, 3)
+      .to(amplitude, { duration: 1.5, value: 1, ease: "power2.in" }, 4.5)
+      
+      // 漸隱效果延後開始，創造更戲劇性的消失
+      .to(opacity, { duration: 2, value: 0, ease: "power2.in" }, 4)
   })
 }
 
