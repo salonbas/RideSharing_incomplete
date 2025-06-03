@@ -1,5 +1,5 @@
 <template>
-  <div class="transition-part" ref="container">
+  <div class="transition-part mb-50" ref="container">
     <div class="content">
     </div>
 
