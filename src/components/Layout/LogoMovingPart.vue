@@ -9,17 +9,6 @@
         </div>
       </div>
     </div>
-
-    <!-- 動態圖片 -->
-    <div 
-      ref="imageA"
-      class="image-a"
-      :style="{
-        transform: `translate(${currentPosition.x}px, ${currentPosition.y}px)`
-      }"
-    >
-      <img :src="logoUrl" alt="logo" />  <!-- ✅ 使用匯入後的 URL -->
-    </div>
   </div>
 </template>
 

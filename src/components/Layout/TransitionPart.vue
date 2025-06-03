@@ -3,7 +3,6 @@
     <div ref="taiwanMapContainer" class="taiwan-layer">
         <TaiwanMap />
       </div>
-
       <div class="helix-layer">
         <Helix ref="helixRef" />
       </div>

@@ -136,27 +136,25 @@
         </div>
       </div>
       <!-- 個人資料浮動視窗 -->
-      <div 
-        v-if="showProfileBox" 
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-        @click.self="showProfileBox = false"
-      >
-        <div class="relative bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-          <button 
-            @click="showProfileBox = false" 
-            class="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-          <div class="p-1">
-            <ProfileBox 
-              :user="selectedOrganizer" 
-            />
-          </div>
+    <div 
+      v-if="showProfileBox" 
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="showProfileBox = false"
+    >
+      <div class="relative bg-[#12150e] rounded-2xl shadow-xl max-w-md w-full mx-4 border border-[#d1ad41]/40">
+        <button 
+          @click="showProfileBox = false" 
+          class="absolute top-4 right-4 text-[#d1ad41] hover:text-white bg-black bg-opacity-40 rounded-full p-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <div class="p-1">
+          <ProfileBox :user="selectedOrganizer" />
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>
