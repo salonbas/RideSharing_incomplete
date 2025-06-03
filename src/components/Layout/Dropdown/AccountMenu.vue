@@ -3,7 +3,7 @@
     <img
       :src="user?.avatarUrl || '/default-avatar.png'"
       alt="User Avatar"
-      class="w-10 h-10 rounded-full border-2 border-blue-500 cursor-pointer hover:ring-2 hover:ring-blue-300 transition"
+      class="w-10 h-10 rounded-full border-2 border-[#d1ad41] cursor-pointer hover:ring-2 hover:ring-[#d1ad41]/50 transition"
       @click="toggleMenu"
     />
 
@@ -17,24 +17,24 @@
     >
       <div
         v-if="showMenu"
-        class="absolute right-0 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50"
+        class="absolute right-0 mt-2 w-44 rounded-xl bg-[#12150e] shadow-lg border border-[#d1ad41]/30 z-50"
       >
         <RouterLink
           to="/profile"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100"
+          class="block px-4 py-3 text-sm text-white hover:bg-[#d1ad41]/20 transition"
           @click="closeMenu"
         >
           個人資料
         </RouterLink>
         <RouterLink
           to="/my-events"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100"
+          class="block px-4 py-3 text-sm text-white hover:bg-[#d1ad41]/20 transition"
           @click="closeMenu"
         >
           我的活動
         </RouterLink>
         <button
-          class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100"
+          class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-600/30 transition"
           @click="handleLogout"
         >
           登出
@@ -70,7 +70,6 @@ const handleLogout = () => {
   router.push('/')
 }
 
-// 點擊外部關閉選單
 const handleClickOutside = (event) => {
   if (menuRef.value && !menuRef.value.contains(event.target)) {
     closeMenu()
@@ -93,5 +92,4 @@ onMounted(async () => {
     console.error('無法取得使用者資料:', err)
   }
 })
-
 </script>
