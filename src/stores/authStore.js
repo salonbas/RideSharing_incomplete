@@ -3,7 +3,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000'
+const API_URL = 'https://ridesharingbackend-production.up.railway.app'
+//const API_URL = 'http://localhost:5000'
 
 export function handleApiError(err, { toast = null, autoLogout = true, redirect = '/' } = {}) {
   const status = err.response?.status

@@ -15,6 +15,7 @@
     />
     
     <TransitionPart :image-position="imagePosition" ref="transitionRef" />
+     
   </div>
 </template>
 
